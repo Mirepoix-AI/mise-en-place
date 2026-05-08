@@ -1,6 +1,6 @@
 ---
 name: mirepoix:mise-en-place
-description: Activate the Mirepoix agent behavioral contract for the session — elicit operating mode from the operator, then apply the Karpathy four principles, mode-specific overrides, and Mirepoix addenda. Trigger when starting a substantial coding session, switching contexts (e.g., entering an incident, starting a release, beginning a refactor), or when the operator types `/mise-en-place` or `/mise-en-place mode <name>`.
+description: Activate the Mirepoix agent behavioral contract for the session — elicit operating mode from the operator, then apply the Karpathy four principles, mode-specific overrides, and Mirepoix addenda. Trigger when starting a substantial coding session, switching contexts (e.g., entering an incident, starting a release, beginning a refactor), or when the operator types `/mise-en-place` or `/mise-en-place mode [name]`.
 ---
 
 # mise-en-place skill
@@ -10,7 +10,7 @@ Activates the Mirepoix agent behavioral contract documented in `mise-en-place.md
 ## What this skill does
 
 1. **Elicits the active mode** from the operator — does not assume.
-2. **Surfaces the active mode** in the footer (`mise-en-place: <mode>`) for the rest of the session.
+2. **Surfaces the active mode** in the footer (`mise-en-place: [mode]`) for the rest of the session.
 3. **Applies the four principles + mode overrides + addenda** to subsequent agent behavior.
 
 This skill embodies its own principle #1 ("don't assume; ask") by activating only when the operator declares posture.
@@ -36,7 +36,7 @@ If context strongly suggests a non-default mode (incident page, release-branch P
 
 ## Switching mid-session
 
-The operator can switch modes at any point with `/mise-en-place mode <name>`. Re-prompt to confirm the switch and update the footer. Do not switch silently — mode transitions must be visible.
+The operator can switch modes at any point with `/mise-en-place mode [name]`. Re-prompt to confirm the switch and update the footer. Do not switch silently — mode transitions must be visible.
 
 ## What to load
 

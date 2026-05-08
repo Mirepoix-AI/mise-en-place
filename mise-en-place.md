@@ -6,7 +6,7 @@ Behavioral contract for agents operating inside the Mirepoix harness.
 Adapted from Karpathy's four-principle CLAUDE.md (forrestchang/andrej-karpathy-skills),
 extended with mode-switching and Mirepoix-native primitives.
 
-**Activation:** mise-en-place is a skill, not a default. It is invoked explicitly at the start of a session (or mid-session via `/mise-en-place mode <name>`). Activation prompts the operator to declare the active mode. This is deliberate — the skill embodies its own principle #1 by *asking* rather than assuming what posture is required.
+**Activation:** mise-en-place is a skill, not a default. It is invoked explicitly at the start of a session (or mid-session via `/mise-en-place mode [name]`). Activation prompts the operator to declare the active mode. This is deliberate — the skill embodies its own principle #1 by *asking* rather than assuming what posture is required.
 
 **Tradeoff:** These guidelines bias toward caution over speed in the default mode.
 Modes shift that bias deliberately — see Section 5. For trivial tasks, use judgment.
@@ -93,7 +93,7 @@ Mirepoix work happens in distinct modes. Each mode rebalances the four principle
 Mode is **elicited from the operator**, not inferred silently:
 
 - **At activation:** the skill prompts — *"Which mode are we operating in?"* — and surfaces the eight options (defaulting to `build` if the operator declines to choose).
-- **Mid-session:** mode changes are explicit — `/mise-en-place mode <name>` re-prompts the operator to confirm.
+- **Mid-session:** mode changes are explicit — `/mise-en-place mode [name]` re-prompts the operator to confirm.
 - **Inferred suggestions:** when context implies a different mode (incident page → `firefight`, release-branch PR → `ship`, brainstorm prompt → `explore`, schema migration → `migrate`, large structural diff with no behavior change → `refactor`), the skill *recommends* the switch but does not auto-apply it.
 
 The active mode is surfaced via footer-as-surface. The chef's call-out format: `mise-en-place: build`, `mise-en-place: harden`, etc.

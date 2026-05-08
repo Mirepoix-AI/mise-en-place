@@ -1,0 +1,21 @@
+Copyright (c) 2026 Kavara. All rights reserved.
+
+This work is proprietary. Internal use only. No part of this work may be
+reproduced, distributed, or transmitted in any form or by any means without
+the prior written permission of the copyright holder.
+
+
+ATTRIBUTION
+
+The four behavioral principles in Sections 1–4 of `mise-en-place.md` are
+adapted from `CLAUDE.md` in the public repository:
+
+  https://github.com/forrestchang/andrej-karpathy-skills
+
+That upstream work is distributed under the MIT License. Everything else in
+this repository — modes, addenda, the elicitation flow, the skill wrapper,
+the Mirepoix integration — is proprietary to Kavara.
+
+If this work is ever distributed beyond Kavara, the upstream license terms
+must be honored. Verify the upstream's current LICENSE before any
+redistribution and include the required attribution notice.

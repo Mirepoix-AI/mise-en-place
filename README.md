@@ -38,4 +38,6 @@ Internal artifact, work-in-progress. Iteration expected; the contract should lea
 
 ## License
 
-TBD.
+Proprietary — Copyright (c) 2026 Kavara. All rights reserved. Internal use only. See [LICENSE](./LICENSE) for full terms and upstream attribution.
+
+The four principles in Sections 1–4 of `mise-en-place.md` are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md), which is MIT-licensed. Everything else (modes, addenda, elicitation flow, skill wrapper) is Kavara-proprietary.

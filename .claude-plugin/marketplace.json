@@ -1,0 +1,17 @@
+{
+  "name": "mirepoix",
+  "owner": {
+    "name": "John Edge",
+    "email": "john.edge@kavara.ai"
+  },
+  "plugins": [
+    {
+      "name": "mise-en-place",
+      "source": "./",
+      "description": "Mirepoix's agent behavioral contract — Karpathy four principles + 8 operating modes + Mirepoix addenda. Activates as a skill that elicits the active mode from the operator at session start.",
+      "version": "0.1.0",
+      "homepage": "https://github.com/UlyssesModel/mise-en-place",
+      "keywords": ["mirepoix", "agent-skills", "claude-code", "behavioral-contract"]
+    }
+  ]
+}

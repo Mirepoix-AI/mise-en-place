@@ -8,16 +8,53 @@
 - **An elicitation flow** — the skill *asks* the operator to declare posture rather than assuming. The activation surface embodies the contract's own principle #1 (think before coding).
 - **Four Mirepoix-native addenda** — skill invocation over freeform reasoning, evaluation packs as verifiers, meta-agent decomposition before shape-shifting, ADRs that precede architectural commitments.
 
-## Files
+## Repository structure
+
+This repository is both a **Claude Code marketplace** and the **plugin** itself (a single-plugin marketplace). The layout:
 
 | Path | Purpose |
 |------|---------|
-| [`mise-en-place.md`](./mise-en-place.md) | Canonical contract. Four principles, eight modes (with behavioral signature table), four addenda, acceptance test. |
-| [`skills/mise-en-place/SKILL.md`](./skills/mise-en-place/SKILL.md) | Activation surface. Frontmatter + activation flow + invariants. Drop into a Claude Code or Mirepoix skills directory. |
+| [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) | Marketplace manifest — declares this plugin |
+| [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) | Plugin manifest |
+| [`skills/mise-en-place/SKILL.md`](./skills/mise-en-place/SKILL.md) | Activation surface — the skill itself |
+| [`skills/mise-en-place/references/contract.md`](./skills/mise-en-place/references/contract.md) | Canonical contract — four principles, eight modes, four addenda, acceptance test |
+| [`mise-en-place.md`](./mise-en-place.md) | Symlink to `skills/mise-en-place/references/contract.md` for browse-at-root convenience |
+
+## Install
+
+### Claude Code (CLI)
+
+From any terminal on a machine with the repo cloned (or with SSH access to the private repo):
+
+```bash
+# From a local clone:
+claude plugin marketplace add /path/to/mise-en-place
+
+# Or directly from GitHub (requires SSH access to the private repo):
+claude plugin marketplace add UlyssesModel/mise-en-place
+
+# Then install the plugin:
+claude plugin install mise-en-place@mirepoix
+```
+
+Restart Claude Code. The skill will appear under `/plugin` → Installed.
+
+### Cowork (desktop)
+
+The Cowork plugin manager accepts the bundled `.plugin` file directly. Build it with:
+
+```bash
+cd /path/to/mise-en-place
+zip -r /tmp/mise-en-place.plugin .claude-plugin skills README.md LICENSE
+```
+
+Then drag `/tmp/mise-en-place.plugin` into Cowork's plugin install affordance.
 
 ## Usage
 
-Place `skills/mise-en-place/` into your skills directory. The skill self-describes via its frontmatter and triggers on session start, context switch, or explicit `/mise-en-place` invocation. On activation, the skill prompts the operator to declare an active mode; the rest of the session runs under that mode's overrides plus the four fixed principles plus the four starter addenda.
+On activation, the skill prompts the operator to declare an active mode (`build`, `explore`, `harden`, `ship`, `firefight`, `review`, `migrate`, `refactor`). The rest of the session runs under that mode's overrides plus the four fixed principles plus the four starter addenda.
+
+Trigger with `/mise-en-place`, or let the skill self-trigger at session start / on context switches. Switch modes mid-session with `/mise-en-place mode [name]`.
 
 ## Invariants
 
@@ -26,7 +63,7 @@ Place `skills/mise-en-place/` into your skills directory. The skill self-describ
 - New modes must occupy a behavioral cell no existing mode covers.
 - New addenda must be universally applicable, foundational, and non-obvious.
 - One mode active at a time. No composition.
-- Mode is always knowable from the footer (`mise-en-place: <mode>`).
+- Mode is always knowable from the footer (`mise-en-place: [mode]`).
 
 ## Lineage
 
@@ -40,4 +77,4 @@ Internal artifact, work-in-progress. Iteration expected; the contract should lea
 
 Proprietary — Copyright (c) 2026 Kavara. All rights reserved. Internal use only. See [LICENSE](./LICENSE) for full terms and upstream attribution.
 
-The four principles in Sections 1–4 of `mise-en-place.md` are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md), which is MIT-licensed. Everything else (modes, addenda, elicitation flow, skill wrapper) is Kavara-proprietary.
+The four principles in Sections 1–4 of the bundled contract (`skills/mise-en-place/references/contract.md`) are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md), which is MIT-licensed. Everything else (modes, addenda, elicitation flow, skill wrapper) is Kavara-proprietary.

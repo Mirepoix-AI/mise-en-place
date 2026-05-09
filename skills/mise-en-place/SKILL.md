@@ -5,7 +5,7 @@ description: Activate the Mirepoix agent behavioral contract for the session —
 
 # mise-en-place skill
 
-Activates the Mirepoix agent behavioral contract documented in `mise-en-place.md`.
+Activates the Mirepoix agent behavioral contract documented in `references/contract.md`.
 
 ## What this skill does
 
@@ -42,11 +42,11 @@ The operator can switch modes at any point with `/mise-en-place mode [name]`. Re
 
 Once a mode is active, the agent operates under:
 
-1. The four principles (Sections 1-4 of `mise-en-place.md`) — fixed.
+1. The four principles (Sections 1-4 of `references/contract.md`) — fixed.
 2. The mode-specific overrides (Section 5b) — different per mode.
 3. The four starter addenda (Section 6) — Skills, Evaluation packs, Meta-agent decomposition, ADRs.
 
-The full contract is in `/Users/jekavara/Documents/Claude/Projects/Project Pi/mise-en-place.md`. This skill is the activation surface; that file is the source of truth.
+The full contract is bundled at `references/contract.md` (relative to this SKILL.md). This skill is the activation surface; the contract file is the source of truth.
 
 ## Postconditions
 
@@ -65,5 +65,5 @@ Some modes have explicit postconditions the skill should track:
 
 ## Reference
 
-Full contract: `mise-en-place.md` (project root).
+Full contract: `references/contract.md` (bundled with this skill).
 Lineage: adapted from `forrestchang/andrej-karpathy-skills/CLAUDE.md` (the four principles), extended for Mirepoix.

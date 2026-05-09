@@ -30,6 +30,8 @@ When invoked, ask the operator:
 > - `migrate` — irreversible change. Schema, API, data, major dep bumps.
 > - `refactor` — behavior-preserving structural change. Large diff by design.
 
+> Full reference: [MODES.md](../../MODES.md). Contract: [§5b](references/contract.md#5b-the-eight-modes).
+
 If the operator declines to choose, default to `build` and surface that explicitly.
 
 If context strongly suggests a non-default mode (incident page, release-branch PR, schema migration, brainstorm prompt), *recommend* the suggestion to the operator — but do not switch automatically. The operator confirms or overrides.

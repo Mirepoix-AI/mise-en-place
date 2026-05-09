@@ -10,6 +10,17 @@
       "status": "complete",
       "completed_at": "2026-05-09T03:30:00Z",
       "pr_url": "https://github.com/UlyssesModel/mise-en-place/pull/1"
+    },
+    {
+      "session_id": "47f304ac-c447-46c3-a114-e392b64953a2",
+      "session_name": "20260509_034145_modes-md",
+      "branch": "on-loop/modes-md",
+      "worktree_path": ".claude/worktrees/modes-md",
+      "started_at": "2026-05-09T03:41:45Z",
+      "status": "complete",
+      "active_mode": "explore->build",
+      "completed_at": "2026-05-09T04:10:00Z",
+      "pr_url": "https://github.com/UlyssesModel/mise-en-place/pull/2"
     }
   ]
 }

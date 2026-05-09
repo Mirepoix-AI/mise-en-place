@@ -18,6 +18,7 @@ This repository is both a **Claude Code marketplace** and the **plugin** itself 
 | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) | Plugin manifest |
 | [`skills/mise-en-place/SKILL.md`](./skills/mise-en-place/SKILL.md) | Activation surface — the skill itself |
 | [`skills/mise-en-place/references/contract.md`](./skills/mise-en-place/references/contract.md) | Canonical contract — four principles, eight modes, four addenda, acceptance test |
+| [`MODES.md`](./MODES.md) | Index for the eight operating modes — taglines, when-to-use, links into the contract |
 | [`mise-en-place.md`](./mise-en-place.md) | Symlink to `skills/mise-en-place/references/contract.md` for browse-at-root convenience |
 
 ## Install
@@ -55,6 +56,10 @@ Then drag `/tmp/mise-en-place.plugin` into Cowork's plugin install affordance.
 On activation, the skill prompts the operator to declare an active mode (`build`, `explore`, `harden`, `ship`, `firefight`, `review`, `migrate`, `refactor`). The rest of the session runs under that mode's overrides plus the four fixed principles plus the four starter addenda.
 
 Trigger with `/mise-en-place`, or let the skill self-trigger at session start / on context switches. Switch modes mid-session with `/mise-en-place mode [name]`.
+
+## Modes
+
+Eight operating modes — see [MODES.md](./MODES.md) for the index, or [contract §5b](skills/mise-en-place/references/contract.md#5b-the-eight-modes) for the rigorous definition. One mode is active at a time; each rebalances the four principles for a distinct kind of work.
 
 ## Invariants
 

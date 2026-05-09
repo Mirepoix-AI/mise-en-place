@@ -1,0 +1,21 @@
+# changes.log — files created/modified in this session
+# format: <phase> <relative-path>
+INIT .on-loop/sessions/20260509_034145_modes-md/state.json
+INIT .on-loop/sessions/20260509_034145_modes-md/plan.md
+INIT .on-loop/sessions/20260509_034145_modes-md/changes.log
+INIT .on-loop/index.json
+[2026-05-09T03:46:00Z] architect (explore mode): wrote agent-notes/architect.md — 4 layout options (A: card grid; B: comparison table; C: scenario-led prose; D: hybrid table+cards), cross-link decisions, behavioral-signature-table tradeoff, recommendation. No production files edited. (Wrote to wrong path; orchestrator moved to worktree.)
+[2026-05-09T03:48:00Z] orchestrator: surfaced 4 decisions to operator via AskUserQuestion. Operator picked all 4 architect recommendations: Layout D, README §+structure-row, SKILL.md keep-bullets+pointer, §5b link+oddities-inline. Mode transitioning from explore to build for CODE phase.
+[2026-05-09T03:48:30Z] orchestrator: wrote plan.md (locked) — content contract, linking strategy, AC table.
+CODE MODES.md
+CODE README.md
+CODE skills/mise-en-place/SKILL.md
+[2026-05-09T03:55:00Z] coding (build mode): created MODES.md (74 lines, Layout D — intro + table + load-bearing oddities + 8 cards + footer); README.md (additive: new ## Modes section between Usage and Invariants, MODES.md row added to Repository structure table); skills/mise-en-place/SKILL.md (one pointer line appended after activation bullets). Validator exit=0; unittest exit=0.
+TEST .on-loop/sessions/20260509_034145_modes-md/agent-notes/testing.md
+SECURITY .on-loop/sessions/20260509_034145_modes-md/agent-notes/security.md
+DOC .on-loop/sessions/20260509_034145_modes-md/agent-notes/documentation.md
+BUILD .on-loop/sessions/20260509_034145_modes-md/agent-notes/build.md
+REVIEW .on-loop/sessions/20260509_034145_modes-md/agent-notes/reviewer.md
+[2026-05-09T04:05:00Z] orchestrator: TEST PASS (4 ACs verified, 2 LOW drift findings — intentional emphasis shifts); SECURITY PASS (no findings, docs-only scope); DOC sanity-check PASS; BUILD no-op PASS; REVIEW APPROVE (0 BLOCKER, 2 NIT, 1 NICE-TO-HAVE).
+[2026-05-09T04:08:00Z] orchestrator: GIT phase — committed 14 files, pushed on-loop/modes-md, opened PR #2.
+[2026-05-09T04:10:00Z] orchestrator: COMPLETE — state.json + index.json updated with pr_url. Explore-mode postcondition: separate branch + on-loop/* convention tags it deletable post-merge.

@@ -1,0 +1,23 @@
+# changes.log — files created/modified in this session
+# format: <phase> <relative-path>
+INIT specs/validate-ci.md
+INIT .on-loop/sessions/20260509_025649_validate-ci/state.json
+INIT .on-loop/sessions/20260509_025649_validate-ci/plan.md
+INIT .on-loop/sessions/20260509_025649_validate-ci/changes.log
+[2026-05-09T03:01:17Z] architect: wrote agent-notes/architect.md (blueprint for validate-ci)
+[2026-05-09T03:05:00Z] orchestrator: wrote plan.md (PLAN phase) + 3 operator guardrails embedded
+CODE .github/scripts/validate_plugin.py
+CODE .github/scripts/test_validate_plugin.py
+CODE .github/workflows/validate.yml
+TEST .github/scripts/test_validate_plugin.py
+TEST .on-loop/sessions/20260509_025649_validate-ci/agent-notes/testing.md
+BUILD .gitignore
+BUILD .on-loop/sessions/20260509_025649_validate-ci/agent-notes/build.md
+SECURITY .on-loop/sessions/20260509_025649_validate-ci/agent-notes/security.md
+DOC .github/scripts/README.md
+DOC README.md
+DOC .on-loop/sessions/20260509_025649_validate-ci/agent-notes/documentation.md
+REVIEW .on-loop/sessions/20260509_025649_validate-ci/agent-notes/reviewer.md
+[2026-05-09T03:24:00Z] orchestrator: review APPROVE (4 NITs / 0 BLOCKERS); consolidated stray notes from main-repo path into worktree
+[2026-05-09T03:28:00Z] orchestrator: GIT phase — committed 18 files, pushed on-loop/validate-ci, opened PR #1
+[2026-05-09T03:30:00Z] orchestrator: COMPLETE — state.json + index.json updated with pr_url

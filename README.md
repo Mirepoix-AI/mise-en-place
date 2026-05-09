@@ -69,6 +69,14 @@ Trigger with `/mise-en-place`, or let the skill self-trigger at session start / 
 
 The four principles are kept verbatim from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md). Everything wrapped around them — modes, addenda, elicitation flow, the name itself — is Mirepoix-native.
 
+## CI
+
+Every push and pull request to `main` runs `.github/workflows/validate.yml`,
+which checks JSON manifest validity, SKILL.md frontmatter integrity (including
+an XML-tag ban that prevents the `fcb93f5` regression), and relative-reference
+integrity across all skill files. No external dependencies — stdlib Python only.
+See [`.github/scripts/README.md`](./.github/scripts/README.md) for details.
+
 ## Status
 
 Internal artifact, work-in-progress. Iteration expected; the contract should leak before it hardens.

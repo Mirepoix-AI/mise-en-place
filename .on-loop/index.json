@@ -1,0 +1,15 @@
+{
+  "version": "1.1",
+  "sessions": [
+    {
+      "session_id": "b26c7ea0-0df5-4c93-823e-91710fa3729f",
+      "session_name": "20260509_025649_validate-ci",
+      "branch": "on-loop/validate-ci",
+      "worktree_path": ".claude/worktrees/validate-ci",
+      "started_at": "2026-05-09T02:56:49Z",
+      "status": "complete",
+      "completed_at": "2026-05-09T03:30:00Z",
+      "pr_url": "https://github.com/UlyssesModel/mise-en-place/pull/1"
+    }
+  ]
+}

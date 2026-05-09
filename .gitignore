@@ -19,3 +19,6 @@ Thumbs.db
 # Local notes
 NOTES.local.md
 SCRATCH.md
+
+# Python bytecode
+__pycache__/

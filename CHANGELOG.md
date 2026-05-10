@@ -5,6 +5,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/); the
 plugin uses [SemVer](https://semver.org/): MAJOR for contract-breaking,
 MINOR for behavior additions, PATCH for fixes that don't change behavior.
 
+## [0.3.0] — 2026-05-09
+
+Adds the slash-command surface that the skill description has always promised.
+
+### Added
+- **`/mise-en-place` slash command** (`PR #4`). The skill description in
+  `skills/mise-en-place/SKILL.md` has always referenced typing
+  `/mise-en-place` or `/mise-en-place mode [name]` as activation paths,
+  but the plugin shipped without a `commands/` entry — meaning the
+  slash form returned `Unknown command` and the only working invocation
+  was natural-language ("activate the mise-en-place skill"). This adds
+  `commands/mise-en-place.md` so the slash form now resolves correctly.
+  - `/mise-en-place` (no args) — default elicitation flow per the skill.
+  - `/mise-en-place mode <name>` (one of the eight) — direct activation
+    in the named mode without re-eliciting.
+  - Anything else after `/mise-en-place` — treated as operator
+    commentary; the agent confirms intent.
+
+  Surfaces the contract in the same shape skills already do; the skill
+  remains the source of truth for the eight modes and the contract
+  semantics. The slash command is a thin invocation wrapper.
+
 ## [0.2.0] — 2026-05-09
 
 First behavior-changing release since the initial commit. Combines the

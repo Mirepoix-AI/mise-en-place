@@ -1,6 +1,6 @@
 {
   "name": "mise-en-place",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Mirepoix's agent behavioral contract — Karpathy four principles + 8 operating modes + Mirepoix addenda. Activates as a skill that elicits the active mode from the operator at session start.",
   "author": {
     "name": "John Edge",

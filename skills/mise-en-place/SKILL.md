@@ -46,7 +46,7 @@ Once a mode is active, the agent operates under:
 
 1. The four principles (Sections 1-4 of `references/contract.md`) — fixed.
 2. The mode-specific overrides (Section 5b) — different per mode.
-3. The four starter addenda (Section 6) — Skills, Evaluation packs, Meta-agent decomposition, ADRs.
+3. The five starter addenda (Section 6) — Skills, Evaluation packs, Meta-agent decomposition, ADRs, Multi-agent review.
 
 The full contract is bundled at `references/contract.md` (relative to this SKILL.md). This skill is the activation surface; the contract file is the source of truth.
 

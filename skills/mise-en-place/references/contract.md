@@ -207,7 +207,7 @@ Load-bearing oddities, worth memorizing:
 
 These are platform-native rules that ride alongside the four principles. They tell you *how to act in this codebase*, not *how to think*.
 
-**Four starter addenda. Set is not closed** — additions are expected. Promotion criteria: an addendum should be universally applicable (not edge-case), foundational (other rules build on it), and non-obvious (an agent wouldn't follow it without being told).
+**Five starter addenda. Set is not closed** — additions are expected. Promotion criteria: an addendum should be universally applicable (not edge-case), foundational (other rules build on it), and non-obvious (an agent wouldn't follow it without being told).
 
 ### Skills (slash-tree)
 
@@ -229,6 +229,19 @@ When a task spans multiple sub-skills, decompose first (the meta-agent step), th
 ### ADRs
 
 Decisions that bind future behavior become ADRs (the 001-009 sequence sets the precedent). If your change implies an architectural commitment — a wire format, a contract, a default — draft an ADR before the code, not after. Code without an ADR is a fact about today; an ADR is a fact about tomorrow.
+
+### Multi-agent review
+
+When the project declares a reviewer list, high-stakes review and gate work
+dispatches to those reviewers in parallel rather than to a single agent.
+Reconciliation is unanimous APPROVE — any REQUEST_CHANGES blocks the phase.
+The reviewer identifiers are project-defined (typically via a
+`## Multi-agent review` section in the project's `CLAUDE.md`); this contract
+specifies the dispatch and reconciliation shape, not the vocabulary.
+
+Empirical basis: `UlyssesModel/kavara-mirepoix-internal#11` and `#12` —
+two-for-two on real architectural issues caught by the second reviewer that
+a single-reviewer pass had APPROVE'd past.
 
 ---
 

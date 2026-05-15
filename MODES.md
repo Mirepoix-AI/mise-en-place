@@ -45,6 +45,8 @@ Postcondition: a writeup or ADR. The code is deletable by design.
 ### `ship`
 
 All four principles strengthen. Assumptions stated *and* verified, no new dependencies, every line traces to the merge target's intent, deploy-readiness checklist met. No assumed-green CI.
+
+The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks the merge — see [contract §6 / Multi-agent review](skills/mise-en-place/references/contract.md#6-mirepoix-addenda).
 [Full contract →](skills/mise-en-place/references/contract.md#5b-the-eight-modes)
 
 ### `firefight`
@@ -56,6 +58,8 @@ Postcondition: postmortem stub plus a list of `HACK(firefight)` tags to triage.
 ### `review`
 
 All four principles reframed as **surfacing**, not **doing**. Flag tradeoffs and concerns rather than fix them; don't suggest changes beyond the review's scope. Success is decision-quality feedback, not an action-item list. If a review uncovers something that demands a write, exit `review` mode explicitly first.
+
+When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE — see [contract §6 / Multi-agent review](skills/mise-en-place/references/contract.md#6-mirepoix-addenda).
 [Full contract →](skills/mise-en-place/references/contract.md#5b-the-eight-modes)
 
 ### `migrate`

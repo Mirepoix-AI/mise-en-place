@@ -11,7 +11,7 @@ Promotes the multi-agent review face-off pattern to addendum #5 of the
 behavioral contract. Behavior addition; no breaking change.
 
 ### Added
-- **Addendum #5: Multi-agent review** (`PR #N`). When the project being
+- **Addendum #5: Multi-agent review** (`PR #5`). When the project being
   operated on declares a reviewer list, high-stakes review and gate work
   dispatches to those reviewers in parallel and requires unanimous APPROVE —
   any REQUEST_CHANGES blocks the phase. The reviewer-identifier vocabulary
@@ -20,14 +20,14 @@ behavioral contract. Behavior addition; no breaking change.
   reconciliation shape only. Added to
   `skills/mise-en-place/references/contract.md` §6 alongside the four
   starter addenda.
-- **`MODES.md` cross-references** (`PR #N`). One-sentence pointers in the
+- **`MODES.md` cross-references** (`PR #5`). One-sentence pointers in the
   `review` and `ship` mode sections noting the multi-agent dispatch when
   the project declares a reviewer list. The modes themselves are unchanged —
   the addendum operates on top of modes, not as one.
-- **`SKILL.md` enumeration update** (`PR #N`). The "What to load" section
+- **`SKILL.md` enumeration update** (`PR #5`). The "What to load" section
   now lists five starter addenda (Skills, Evaluation packs, Meta-agent
   decomposition, ADRs, Multi-agent review) instead of four.
-- **`README.md` enumeration update** (`PR #N`). The opening bullet that
+- **`README.md` enumeration update** (`PR #5`). The opening bullet that
   names the four Mirepoix-native addenda now names five.
 
 ### Notes

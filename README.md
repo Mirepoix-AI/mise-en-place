@@ -6,7 +6,7 @@
 
 - **Eight operating modes** — `build`, `explore`, `harden`, `ship`, `firefight`, `review`, `migrate`, `refactor` — each rebalancing the four principles for a distinct kind of work.
 - **An elicitation flow** — the skill *asks* the operator to declare posture rather than assuming. The activation surface embodies the contract's own principle #1 (think before coding).
-- **Four Mirepoix-native addenda** — skill invocation over freeform reasoning, evaluation packs as verifiers, meta-agent decomposition before shape-shifting, ADRs that precede architectural commitments.
+- **Five Mirepoix-native addenda** — skill invocation over freeform reasoning, evaluation packs as verifiers, meta-agent decomposition before shape-shifting, ADRs that precede architectural commitments, and multi-agent review when the project declares a reviewer list.
 
 ## Repository structure
 
@@ -17,7 +17,7 @@ This repository is both a **Claude Code marketplace** and the **plugin** itself 
 | [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) | Marketplace manifest — declares this plugin |
 | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) | Plugin manifest |
 | [`skills/mise-en-place/SKILL.md`](./skills/mise-en-place/SKILL.md) | Activation surface — the skill itself |
-| [`skills/mise-en-place/references/contract.md`](./skills/mise-en-place/references/contract.md) | Canonical contract — four principles, eight modes, four addenda, acceptance test |
+| [`skills/mise-en-place/references/contract.md`](./skills/mise-en-place/references/contract.md) | Canonical contract — four principles, eight modes, five addenda, acceptance test |
 | [`MODES.md`](./MODES.md) | Index for the eight operating modes — taglines, when-to-use, links into the contract |
 | [`mise-en-place.md`](./mise-en-place.md) | Symlink to `skills/mise-en-place/references/contract.md` for browse-at-root convenience |
 
@@ -53,7 +53,7 @@ Then drag `/tmp/mise-en-place.plugin` into Cowork's plugin install affordance.
 
 ## Usage
 
-On activation, the skill prompts the operator to declare an active mode (`build`, `explore`, `harden`, `ship`, `firefight`, `review`, `migrate`, `refactor`). The rest of the session runs under that mode's overrides plus the four fixed principles plus the four starter addenda.
+On activation, the skill prompts the operator to declare an active mode (`build`, `explore`, `harden`, `ship`, `firefight`, `review`, `migrate`, `refactor`). The rest of the session runs under that mode's overrides plus the four fixed principles plus the five starter addenda.
 
 Trigger with `/mise-en-place`, or let the skill self-trigger at session start / on context switches. Switch modes mid-session with `/mise-en-place mode [name]`.
 

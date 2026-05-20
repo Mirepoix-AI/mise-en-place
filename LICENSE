@@ -14,7 +14,7 @@ are adapted from `CLAUDE.md` in the public repository:
 
 That upstream work is distributed under the MIT License.
 
-Principle 5 (Justified Action / Five Whys), added in v0.4.0 per ADR-016, is
+Principle 5 (Justified Action / Five Whys), added in v0.5.0 per ADR-016, is
 Mirepoix-augmented from Amazon's Well-Architected framework Five Whys discipline:
 
   https://wa.aws.amazon.com/wellarchitected/
@@ -25,7 +25,7 @@ than incident-only RCA technique) and the mode-specific override structure
 across the eight operating modes. See ADR-016 in kavara-mirepoix-internal for
 the full architectural commitment.
 
-Everything else in this repository — modes, the elicitation flow, the four
+Everything else in this repository — modes, the elicitation flow, the five
 Mirepoix addenda, the skill wrapper, the Mirepoix integration — is proprietary
 to Kavara.
 

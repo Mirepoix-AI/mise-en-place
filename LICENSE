@@ -7,15 +7,29 @@ the prior written permission of the copyright holder.
 
 ATTRIBUTION
 
-The four behavioral principles in Sections 1–4 of `mise-en-place.md` are
-adapted from `CLAUDE.md` in the public repository:
+Principles 1-4 in the bundled contract (`skills/mise-en-place/references/contract.md`)
+are adapted from `CLAUDE.md` in the public repository:
 
   https://github.com/forrestchang/andrej-karpathy-skills
 
-That upstream work is distributed under the MIT License. Everything else in
-this repository — modes, addenda, the elicitation flow, the skill wrapper,
-the Mirepoix integration — is proprietary to Kavara.
+That upstream work is distributed under the MIT License.
+
+Principle 5 (Justified Action / Five Whys), added in v0.4.0 per ADR-016, is
+Mirepoix-augmented from Amazon's Well-Architected framework Five Whys discipline:
+
+  https://wa.aws.amazon.com/wellarchitected/
+
+The Well-Architected framework is openly published by Amazon Web Services.
+Mirepoix's contribution is the foundational placement (principle-layer rather
+than incident-only RCA technique) and the mode-specific override structure
+across the eight operating modes. See ADR-016 in kavara-mirepoix-internal for
+the full architectural commitment.
+
+Everything else in this repository — modes, the elicitation flow, the four
+Mirepoix addenda, the skill wrapper, the Mirepoix integration — is proprietary
+to Kavara.
 
 If this work is ever distributed beyond Kavara, the upstream license terms
-must be honored. Verify the upstream's current LICENSE before any
-redistribution and include the required attribution notice.
+must be honored. Verify the upstream LICENSE files before any redistribution
+and include the required attribution notices for both the Karpathy upstream
+and the Amazon Well-Architected lineage of Principle 5.

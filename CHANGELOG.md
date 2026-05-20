@@ -5,6 +5,50 @@ Format follows [Keep a Changelog](https://keepachangelog.com/); the
 plugin uses [SemVer](https://semver.org/): MAJOR for contract-breaking,
 MINOR for behavior additions, PATCH for fixes that don't change behavior.
 
+## [0.5.0] — 2026-05-20
+
+Adds the fifth foundational principle: **Justified Action / Five Whys**. The principle is Mirepoix-augmented from Amazon's Well-Architected framework, elevated to the same structural layer as Karpathy's four (the "fixed invariants" tier). Architectural authority: [ADR-016 in kavara-mirepoix-internal](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md).
+
+The principle covers both forward justification (articulate the why-chain before substantive work) and backward causal analysis (apply five whys to failures, refusing "human error" as a terminal explanation). The discipline is procedural: blame the system, never the operator; five iterations is the floor, not a ceiling.
+
+### Added
+
+- **Principle 5 — Justified Action** (new Section 5 in `skills/mise-en-place/references/contract.md`). Forward and backward applications, posture rules, mode-specific overrides for all eight modes.
+- **#5 column** in the mode signature table. Five-principle matrix replaces the prior four-principle matrix.
+- **New load-bearing oddity** in MODES.md: `firefight` is the only mode where #5 defers entirely (causal analysis happens in the postmortem, not during the incident).
+- **`firefight` postmortem now requires the five-whys causal chain**, not just a chronology. Codified in the mode's postcondition.
+- **`review` mode reviewers (including multi-agent review per v0.4.0 addendum #5) now apply Principle 5 to findings** — every flagged finding traces to at least one iteration of why. "This looks wrong" is insufficient without one iteration of why beneath it.
+- **CI invariant check** (`validate_plugin.py` extension): asserts contract.md contains the "## 5. Justified Action" heading. Stdlib-only, follows the existing 22-test pattern (now 28 tests including the new `TestPrinciple5Invariant` class).
+- **LICENSE attribution** for Five Whys (Amazon's Well-Architected framework) added alongside the existing Karpathy attribution.
+
+### Changed
+
+- **Contract sectioning renumbered**: Section 5 (Modes) → 6, Section 6 (Mirepoix Addenda) → 7, Section 7 (Acceptance Test) → 8. The v0.4.0 addendum #5 (Multi-agent review) is preserved verbatim in the new Section 7.
+- **MODES.md cross-references** updated from §5b to §6b throughout. The two `ship` and `review` mode cross-refs to the Multi-agent review addendum updated from §6 to §7.
+- **README.md "four principles" framing** restructured to "five principles, eight modes, five addenda."
+- **SKILL.md activation flow** now surfaces Principle 5 alongside the active-mode elicitation. "Sections 1-4" → "Sections 1-5"; "Section 5b" → "Section 6b"; "Section 6" addenda reference → "Section 7."
+- **plugin.json description** updated to enumerate five principles + five addenda.
+
+### Sequencing context
+
+| Version | Subject | Date |
+|---|---|---|
+| v0.3.0 | Slash command surface | 2026-05-09 |
+| v0.4.0 | Addendum #5: Multi-agent review | 2026-05-15 |
+| **v0.5.0** | **Principle 5: Justified Action (this release)** | **2026-05-20** |
+| v0.6.0 | Addendum #6: DDD vocabulary discipline (ADR-014 Follow-up 2) | Future |
+
+### Notes for operators
+
+- Existing memory of "Karpathy four" remains correct — the four principles are unchanged. The addition is "Karpathy four PLUS Kavara's fifth."
+- Existing memory of "Section 5 is Modes" is invalidated; Modes is now Section 6. The brief friction is acceptable per ADR-016's first consequence; the alternative (calling the new principle "Section 4.5") was rejected as structurally awkward.
+- Operators in `explore` mode can defer the why-chain to the mode-exit writeup; in `firefight`, the chain is deferred to the postmortem; everywhere else, the chain is active.
+- Multi-agent review (addendum #5 from v0.4.0) and Principle 5 reinforce each other: reviewers articulate why-chains for findings (one iteration floor per `review` mode override); the operator reconciles disagreements via "act on finding" default rooted in why-chain analysis.
+
+### Architectural authority
+
+[ADR-016 — mise-en-place Principle 5 — Justified Action](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md) is the canonical decision. The fork-shaped commitment is explicit and ADR-authorized per ADR-014's Generic Domain principle ("Vocabulary divergence from upstream is itself an ADR-worthy decision").
+
 ## [0.4.0] — 2026-05-15
 
 Promotes the multi-agent review face-off pattern to addendum #5 of the

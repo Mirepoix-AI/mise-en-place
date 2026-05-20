@@ -36,6 +36,10 @@ DEFAULT_REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
 KEBAB_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 XML_TAG_RE = re.compile(r"<[a-zA-Z][a-zA-Z0-9_-]*>")
 MD_REFERENCE_RE = re.compile(r"`([^`\n]+?\.md)`")
+# Per ADR-016, contract.md must contain "## 5. Justified Action" exactly
+# (case-sensitive, whitespace-strict). Changes to the heading text require
+# their own ADR.
+PRINCIPLE_5_HEADING_RE = re.compile(r"^## 5\. Justified Action\s*$", re.MULTILINE)
 # Triple-backtick fenced code blocks. We strip these before MD reference
 # extraction so that nested inline `something.md` spans inside fenced blocks
 # do not produce false positives. Tilde-fenced blocks (~~~) are not stripped;
@@ -384,6 +388,42 @@ def validate_skill_references(
 
 
 # ---------------------------------------------------------------------------
+# Contract Principle 5 invariant (ADR-016)
+# ---------------------------------------------------------------------------
+
+
+def validate_contract_principle_5(
+    path: pathlib.Path, repo_root: Optional[pathlib.Path] = None
+) -> list[str]:
+    """Check 4. contract.md must contain the canonical Principle 5 heading.
+
+    Per ADR-016, mise-en-place v0.5.0 onward commits to five foundational
+    principles. The fifth (Justified Action / Five Whys) must appear as the
+    heading "## 5. Justified Action" in the canonical contract. Future
+    versions that drop, rename, or relocate the principle require their
+    own ADR.
+    """
+    repo_root = repo_root if repo_root is not None else DEFAULT_REPO_ROOT
+    rel = _rel(path, repo_root)
+
+    if not path.is_file():
+        return [f"{rel}: contract.md not found (required for Principle 5 invariant)"]
+
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        return [f"{rel}: cannot read contract.md: {exc}"]
+
+    if not PRINCIPLE_5_HEADING_RE.search(text):
+        return [
+            f"{rel}: missing canonical heading '## 5. Justified Action' "
+            f"(required by ADR-016; changes to the heading text require their own ADR)"
+        ]
+
+    return []
+
+
+# ---------------------------------------------------------------------------
 # Skill discovery
 # ---------------------------------------------------------------------------
 
@@ -424,10 +464,12 @@ def _run_checks(repo_root: pathlib.Path) -> tuple[list[str], int]:
     plugin_json = repo_root / ".claude-plugin" / "plugin.json"
     marketplace_json = repo_root / ".claude-plugin" / "marketplace.json"
     skills_dir = repo_root / "skills"
+    contract_md = repo_root / "skills" / "mise-en-place" / "references" / "contract.md"
 
     errors: list[str] = []
     errors.extend(validate_plugin_json(plugin_json, repo_root))
     errors.extend(validate_marketplace_json(marketplace_json, repo_root))
+    errors.extend(validate_contract_principle_5(contract_md, repo_root))
 
     skill_files = find_skill_files(skills_dir)
     for skill_md in skill_files:

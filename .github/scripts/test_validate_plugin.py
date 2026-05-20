@@ -338,6 +338,14 @@ class TestMain(_TempRootTest):
         _write(plugin, json.dumps(_valid_plugin_json()))
         _write(marketplace, json.dumps(_valid_marketplace_json()))
 
+        # Principle 5 invariant (ADR-016): the validator now also checks for
+        # the canonical heading in the mise-en-place contract. The minimal
+        # fixture must include it for the clean-repo path to return 0.
+        mep_contract = (
+            self.root / "skills" / "mise-en-place" / "references" / "contract.md"
+        )
+        _write(mep_contract, "# mise-en-place\n\n## 5. Justified Action\n")
+
         skill = self.root / "skills" / "demo" / "SKILL.md"
         ref_target = skill.parent / "references" / "contract.md"
         _write(ref_target, "# contract\n")
@@ -368,6 +376,72 @@ class TestMain(_TempRootTest):
         with redirect_stdout(out), redirect_stderr(err):
             rc = vp.main(["--repo-root", str(self.root)])
         self.assertEqual(rc, 0, f"expected rc=0, got {rc}; stderr={err.getvalue()!r}")
+
+
+# ---------------------------------------------------------------------------
+# 18–23: Principle 5 invariant tests (ADR-016)
+# ---------------------------------------------------------------------------
+
+
+class TestPrinciple5Invariant(_TempRootTest):
+    """Tests for the validate_contract_principle_5 invariant check (ADR-016)."""
+
+    def _write_contract(self, body: str) -> pathlib.Path:
+        contract = self.root / "contract.md"
+        _write(contract, body)
+        return contract
+
+    def test_canonical_heading_passes(self) -> None:
+        """A contract.md with the canonical Section 5 heading should validate."""
+        contract = self._write_contract(
+            "# mise-en-place\n\n"
+            "## 1. Think Before Coding\n...\n"
+            "## 5. Justified Action\n\n"
+            "**Every action serves a why-chain...**\n"
+        )
+        self.assertEqual(vp.validate_contract_principle_5(contract, self.root), [])
+
+    def test_missing_heading_fails(self) -> None:
+        """A contract.md without Section 5 should produce an error."""
+        contract = self._write_contract(
+            "# mise-en-place\n\n## 1. Think Before Coding\n...\n"
+        )
+        errors = vp.validate_contract_principle_5(contract, self.root)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("missing canonical heading", errors[0])
+        self.assertIn("ADR-016", errors[0])
+
+    def test_renamed_heading_fails(self) -> None:
+        """A renamed Principle 5 (e.g., 'Justified Work' or 'Five Whys') should fail."""
+        contract = self._write_contract("# mise-en-place\n\n## 5. Five Whys\n...\n")
+        errors = vp.validate_contract_principle_5(contract, self.root)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Justified Action", errors[0])
+
+    def test_lowercase_heading_fails(self) -> None:
+        """Heading text is case-sensitive; lowercase 'justified action' should fail."""
+        contract = self._write_contract(
+            "# mise-en-place\n\n## 5. justified action\n...\n"
+        )
+        errors = vp.validate_contract_principle_5(contract, self.root)
+        self.assertEqual(len(errors), 1)
+
+    def test_missing_file_fails(self) -> None:
+        """A non-existent contract.md should produce a clear error."""
+        nonexistent = (
+            self.root / "skills" / "mise-en-place" / "references" / "contract.md"
+        )
+        errors = vp.validate_contract_principle_5(nonexistent, self.root)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("not found", errors[0])
+
+    def test_heading_at_different_section_number_fails(self) -> None:
+        """Section number must be 5 (Principle 5 is the fifth principle, not the eighth)."""
+        contract = self._write_contract(
+            "# mise-en-place\n\n## 8. Justified Action\n...\n"
+        )
+        errors = vp.validate_contract_principle_5(contract, self.root)
+        self.assertEqual(len(errors), 1)
 
 
 if __name__ == "__main__":

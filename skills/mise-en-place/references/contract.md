@@ -106,6 +106,16 @@ Why am I drafting this spec?
 
 If the chain doesn't terminate in a load-bearing premise within five iterations, the proposed work is suspect. Surface the gap; don't proceed silently.
 
+#### Mandatory iteration for destructive operations
+
+Before any destructive or irreversible operation — `git tag`, `git push --force`, schema migration, deployment, file delete on shared state, anything where rollback isn't a code-only operation — the forward chain MUST include an explicit **canonical-state-verification** iteration:
+
+> *Have I verified the assumed state of every artifact the operation touches actually exists with the assumed structure on the target?*
+
+If the answer is no, that iteration is the load-bearing premise; the chain doesn't terminate until the verification is done. This is the structural fix for the failure-mode class where local state silently diverges from canonical (untracked files aborting `git pull`, stale clones, deferred file skeletons that aren't on `main`, framework-convention mismatches between staging and target).
+
+**Reference implementation:** [`UlyssesModel/on-loop/bin/on-loop-tag`](https://github.com/UlyssesModel/on-loop/blob/main/bin/on-loop-tag) — eight pre-flight checks for `git tag` operations (clean worktree, branch sync, signature config, prior-tag absence, etc.). Generalizes to other destructive-op tooling. The discipline is universal; the implementation is per-operation.
+
 ### Backward — when problems occur
 
 Apply five whys to the failure. Each iteration tests whether the reason is the root cause:
@@ -181,7 +191,7 @@ Same five principles as `build`, but with tighter gates:
 - **#2 strengthened:** no new dependencies; no schema changes outside an ADR; no scope additions even if "easy."
 - **#3 strengthened:** every line in the diff must trace to the merge target's intent. If a change isn't in the PR's stated scope, pull it into a separate PR.
 - **#4 strengthened:** success criteria includes a deploy-readiness checklist — ADR exists if breaking, migrations are reversible, observability is in place.
-- **#5 strengthened:** deploy-readiness includes the why-chain trace. "This ships now because [customer commitment date / strategic premise / time-sensitive opportunity] — the chain terminates in a load-bearing premise." If the chain terminates in "...because we said we would," the merge is on schedule-pressure, not strategic-pressure — surface that.
+- **#5 strengthened:** deploy-readiness includes the why-chain trace. "This ships now because [customer commitment date / strategic premise / time-sensitive opportunity] — the chain terminates in a load-bearing premise." If the chain terminates in "...because we said we would," the merge is on schedule-pressure, not strategic-pressure — surface that. The **canonical-state-verification iteration** (§5 Forward) is mandatory before any destructive operation in the ship path — tag creation, release publication, image push.
 
 The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks the merge — see Section 7 / Multi-agent review.
 
@@ -219,7 +229,7 @@ Schema changes, API contract changes, data backfills, major dependency bumps —
 - **#2 strengthened:** every migration step must be reversible or paired with an explicit, tested rollback plan. Complexity is the enemy of rollback.
 - **#3 reframed:** "surgical" means migration scope only — no incidental schema edits, no "while I'm in this table" cleanup. Reversibility cost compounds with every line.
 - **#4 strengthened:** success criteria includes verification on the actual migrated state and a *demonstrated* rollback path, not just a documented one. "Reversed in staging" beats "reversal scripted."
-- **#5 strengthened — bidirectional:** forward AND reverse why-chains both required. "Why does this migration succeed?" and "Why does the rollback work?" both must terminate in load-bearing premises. A migration whose rollback chain terminates in "...because we tested it once" is under-justified; "...because the rollback is structurally bounded by [property X]" is load-bearing.
+- **#5 strengthened — bidirectional:** forward AND reverse why-chains both required. "Why does this migration succeed?" and "Why does the rollback work?" both must terminate in load-bearing premises. A migration whose rollback chain terminates in "...because we tested it once" is under-justified; "...because the rollback is structurally bounded by [property X]" is load-bearing. The **canonical-state-verification iteration** (§5 Forward) is mandatory before applying the migration; verify the assumed state of every schema, table, file, or external artifact the migration touches. "I assume" is not a stated assumption — it's an unfalsified one (per principle #1's strengthened-plus override here).
 
 Postcondition: every `migrate` session emits a runbook entry covering forward, reverse, and verification steps.
 

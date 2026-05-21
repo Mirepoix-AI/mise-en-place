@@ -5,6 +5,47 @@ Format follows [Keep a Changelog](https://keepachangelog.com/); the
 plugin uses [SemVer](https://semver.org/): MAJOR for contract-breaking,
 MINOR for behavior additions, PATCH for fixes that don't change behavior.
 
+## [0.5.1] — 2026-05-20
+
+Clarifies Principle 5 (Justified Action / Five Whys) with an explicit binding rule for destructive operations: the **canonical-state-verification iteration** is mandatory in the forward chain before `git tag`, schema migration, deployment, or any irreversible operation. Patch release — no new behavior, no API change, no contract restructure; existing principle's application made operational.
+
+Empirical motivation: the canonical-state-divergence failure-mode class (untracked files aborting `git pull`, stale local main, framework-convention mismatches, deferred file skeletons) produced five documented incidents across the 2026-05-20 ADR-016 rollout (four during the rollout itself per ADR-016 §"Consequences" eighth point + memory `feedback_canonical_state_canvas.md`) plus one external instance (kirk-stub-realistic v0.2.3 mis-tag, 2026-05-20). All five share shape: local state silently diverged from canonical; operation succeeded structurally; the divergence shipped.
+
+The Layer 1 release-pipeline wrapper `UlyssesModel/on-loop/bin/on-loop-tag` (PR #2, 2026-05-20) is the reference implementation for the discipline applied to `git tag` operations. The shell script's eight pre-flight checks are the canonical pattern; future destructive-op tools follow the same shape.
+
+### Changed
+
+- **`skills/mise-en-place/references/contract.md` §5 Forward** — new sub-section "Mandatory iteration for destructive operations" adds the canonical-state-verification rule as a binding part of the forward Five Whys chain whenever the proposed action is destructive or irreversible. Cross-references the on-loop-tag reference implementation.
+- **`skills/mise-en-place/references/contract.md` §6b `migrate` mode #5 override** — explicit reference to the canonical-state-verification iteration as mandatory before applying the migration.
+- **`skills/mise-en-place/references/contract.md` §6b `ship` mode #5 override** — explicit reference to the canonical-state-verification iteration as mandatory before destructive operations in the ship path (tag creation, release publication, image push).
+- **`.claude-plugin/plugin.json`** — version 0.5.0 → 0.5.1.
+
+### Not changed
+
+- Principle 5 text itself (the forward + backward + posture sub-disciplines) is unchanged. v0.5.1 only adds the mandatory-iteration sub-section.
+- Mode signature table, mode-override paragraphs for `build`/`explore`/`harden`/`firefight`/`review`/`refactor` — unchanged.
+- Section numbering (5/6/7/8) — unchanged.
+- Addenda — unchanged. The Multi-agent review addendum (#5 per v0.4.0) does not move; new amendment is at the principle layer.
+- LICENSE attribution — unchanged.
+- CI validator — unchanged. The Principle 5 invariant check still asserts `## 5. Justified Action` heading exists; the new sub-section is below the heading.
+
+### Sequencing
+
+| Version | Subject | Status |
+|---|---|---|
+| v0.4.0 | Addendum #5: Multi-agent review | Shipped 2026-05-15 |
+| v0.5.0 | Principle 5: Justified Action | Shipped 2026-05-20 (PR #6) |
+| **v0.5.1** | **Principle 5 clarification: canonical-state-verification iteration for destructive ops** | **This release** |
+| v0.6.0 | Addendum #6: DDD vocabulary discipline (ADR-014 Follow-up 2) | Future |
+
+### Follow-up
+
+- `UlyssesModel/on-loop` README cross-reference (one-line addition under the "Safe release tagging" section pointing back at mise-en-place §5 Forward) lands in a small follow-up PR after this release stabilizes. Tracked as part of the v0.5.1 rollout discipline.
+
+### Architectural authority
+
+ADR-016 (`adrs/ADR-016-mise-en-place-principle-5.md` in `kavara-mirepoix-internal`) authorizes Principle 5; v0.5.1 is a clarification within that authorization, not a new architectural commitment. No new ADR required per ADR-014's three-criteria gate (not hard-to-reverse beyond the existing v0.5.0 contract; not surprising-without-context given the canonical-state-canvas memory; trade-off is between explicit binding rule and implicit-inference-from-principle-text — chose explicit per ADR-016's eighth consequence lesson).
+
 ## [0.5.0] — 2026-05-20
 
 Adds the fifth foundational principle: **Justified Action / Five Whys**. The principle is Mirepoix-augmented from Amazon's Well-Architected framework, elevated to the same structural layer as Karpathy's four (the "fixed invariants" tier). Architectural authority: [ADR-016 in kavara-mirepoix-internal](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md).

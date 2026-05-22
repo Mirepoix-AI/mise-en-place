@@ -5,11 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/); the
 plugin uses [SemVer](https://semver.org/): MAJOR for contract-breaking,
 MINOR for behavior additions, PATCH for fixes that don't change behavior.
 
-## [0.5.1] — 2026-05-20
+## [0.5.1] — 2026-05-21
 
 Clarifies Principle 5 (Justified Action / Five Whys) with an explicit binding rule for destructive operations: the **canonical-state-verification iteration** is mandatory in the forward chain before `git tag`, schema migration, deployment, or any irreversible operation. Patch release — no new behavior, no API change, no contract restructure; existing principle's application made operational.
 
-Empirical motivation: the canonical-state-divergence failure-mode class (untracked files aborting `git pull`, stale local main, framework-convention mismatches, deferred file skeletons) produced five documented incidents across the 2026-05-20 ADR-016 rollout (four during the rollout itself per ADR-016 §"Consequences" eighth point + memory `feedback_canonical_state_canvas.md`) plus one external instance (kirk-stub-realistic v0.2.3 mis-tag, 2026-05-20). All five share shape: local state silently diverged from canonical; operation succeeded structurally; the divergence shipped. Auditability note: the four ADR-016-documented incidents and the memory file live in the private `kavara-mirepoix-internal` repo and are not directly inspectable from this public repository; the kirk-stub-realistic v0.2.3 anchor is the publicly verifiable one via that repo's tag history.
+Empirical motivation: the canonical-state-divergence failure-mode class (untracked files aborting `git pull`, stale local main, framework-convention mismatches, deferred file skeletons) produced five documented incidents of this shape — four during the 2026-05-20 ADR-016 rollout itself (per ADR-016 §"Consequences" eighth point + memory `feedback_canonical_state_canvas.md`) and one external (kirk-stub-realistic v0.2.3 mis-tag, 2026-05-20). All five share shape: local state silently diverged from canonical; operation succeeded structurally; the divergence shipped. Auditability note: the four ADR-016-documented incidents and the memory file live in the private `kavara-mirepoix-internal` repo and are not directly inspectable from this public repository; the kirk-stub-realistic v0.2.3 anchor is the publicly verifiable one via that repo's tag history.
 
 The Layer 1 release-pipeline wrapper `UlyssesModel/on-loop/bin/on-loop-tag` (PR #2, 2026-05-20) is the reference implementation for the discipline applied to `git tag` operations. The shell script's eight pre-flight checks are the canonical pattern; future destructive-op tools follow the same shape.
 

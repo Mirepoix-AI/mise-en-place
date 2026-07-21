@@ -16,8 +16,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run validator
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run repository validator
         run: python .github/scripts/validate_plugin.py
+      - name: Run official Claude plugin validator (strict)
+        run: npx --yes @anthropic-ai/claude-code@2.1.216 plugin validate . --strict
+      - name: Build and inspect Cowork bundle
+        run: |
+          python scripts/build_cowork_bundle.py --output /tmp/mise-en-place.plugin
+          python scripts/build_cowork_bundle.py --check /tmp/mise-en-place.plugin
       - name: Run tests
         if: always()
         run: python -m unittest discover .github/scripts -p 'test_*.py' -v

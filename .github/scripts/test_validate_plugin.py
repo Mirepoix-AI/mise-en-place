@@ -44,12 +44,14 @@ def _valid_plugin_json() -> dict:
 def _valid_marketplace_json() -> dict:
     return {
         "name": "mirepoix",
+        "description": "Test marketplace description.",
         "owner": {"name": "John Edge", "email": "john.edge@kavara.ai"},
         "plugins": [
             {
                 "name": "mise-en-place",
                 "source": "./",
                 "description": "Test plugin description.",
+                "version": "0.1.0",
             }
         ],
     }
@@ -133,9 +135,40 @@ class TestMarketplaceJson(_TempRootTest):
             f"expected 'non-empty' error for empty plugins array, got: {errors}",
         )
 
+    def test_marketplace_description_is_required(self) -> None:
+        path = self.root / ".claude-plugin" / "marketplace.json"
+        data = _valid_marketplace_json()
+        del data["description"]
+        _write(path, json.dumps(data))
+        errors = vp.validate_marketplace_json(path, self.root)
+        self.assertIn(
+            ".claude-plugin/marketplace.json: missing required field 'description'",
+            errors,
+        )
+
+
+class TestManifestParity(_TempRootTest):
+    def test_matching_versions_pass(self) -> None:
+        plugin = self.root / ".claude-plugin" / "plugin.json"
+        marketplace = self.root / ".claude-plugin" / "marketplace.json"
+        _write(plugin, json.dumps(_valid_plugin_json()))
+        _write(marketplace, json.dumps(_valid_marketplace_json()))
+        self.assertEqual(vp.validate_manifest_parity(plugin, marketplace, self.root), [])
+
+    def test_version_drift_fails(self) -> None:
+        plugin = self.root / ".claude-plugin" / "plugin.json"
+        marketplace = self.root / ".claude-plugin" / "marketplace.json"
+        _write(plugin, json.dumps(_valid_plugin_json()))
+        data = _valid_marketplace_json()
+        data["plugins"][0]["version"] = "0.0.9"
+        _write(marketplace, json.dumps(data))
+        errors = vp.validate_manifest_parity(plugin, marketplace, self.root)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("does not match plugin.json version '0.1.0'", errors[0])
+
 
 # ---------------------------------------------------------------------------
-# 6–8: frontmatter parser tests
+# Frontmatter parser tests
 # ---------------------------------------------------------------------------
 
 

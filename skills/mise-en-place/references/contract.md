@@ -14,7 +14,7 @@ Modes shift that bias deliberately — see Section 6. For trivial tasks, use jud
 
 **Invariants:** the five principles are fixed. Modes and addenda are *starter sets, not closed* — additions are expected. New modes must occupy a behavioral cell no existing mode covers; new addenda must be universally applicable.
 
-**Lineage:** Principles 1-4 are kept verbatim from Karpathy's published skill content (forrestchang/andrej-karpathy-skills); Principle 5 is Mirepoix-augmented from Amazon's Well-Architected Five Whys (per ADR-016). The fork-shaped commitment is explicit and ADR-authorized.
+**Lineage:** Principles 1-4 are adapted from Karpathy's published skill content (forrestchang/andrej-karpathy-skills); Principle 5 is Mirepoix-augmented from Amazon's Well-Architected Five Whys (per ADR-016). The fork-shaped commitment is explicit and ADR-authorized.
 
 ---
 
@@ -87,24 +87,24 @@ In Mirepoix, the verifier is often an **evaluation pack** (Section 7). New behav
 
 ## 5. Justified Action
 
-**Every action serves a why-chain traceable to a root premise within five iterations. Time is the operator's most valuable commodity — no spent unit deserves to be unjustified.**
+**Every substantive action serves an iterative why-chain traceable to a load-bearing root premise. Time is the operator's most valuable commodity — no spent unit deserves to be unjustified.**
 
-The discipline is Amazon's Five Whys from the Well-Architected framework (per ADR-016), generalized from incident-response RCA to a foundational justification discipline covering both forward and backward causal chains.
+The discipline is Amazon's Five Whys from the Well-Architected framework (per ADR-016), generalized from incident-response RCA to a foundational justification discipline. The same stopping rule applies in both directions: stop when a load-bearing root premise is reached, whether that takes fewer or more than five iterations.
 
 ### Forward — before substantive work
 
-State the why-chain for the proposed action. Five iterations is the floor for non-trivial work, not a ceiling. Stop when you've reached a load-bearing root premise — one whose failure would invalidate the action.
+State the why-chain for the proposed action. Five iterations is a forcing-function checkpoint, not a quota or hard limit. Stop earlier when the chain reaches a load-bearing premise — one whose failure would invalidate the action. Continue beyond five when it does not.
 
 ```
 Why am I drafting this spec?
-→ To ship D1 of @mirepoix/acp-server
+→ To ship D1 of @mirepoix/acp
 → To make Mirepoix consumable by ACP clients
 → To validate Mirepoix Co's methodology-as-distribution thesis
 → Because editor preference is sticky and customers won't switch editors for us
 → Because the durable moat is methodology assembly, not UI chrome  [LOAD-BEARING]
 ```
 
-If the chain doesn't terminate in a load-bearing premise within five iterations, the proposed work is suspect. Surface the gap; don't proceed silently.
+If the chain has not reached a load-bearing premise by the fifth iteration, the proposed work is suspect. Surface the gap and keep investigating; don't proceed silently.
 
 #### Mandatory iteration for destructive operations
 
@@ -118,7 +118,7 @@ If the answer is no, that iteration is the load-bearing premise; the chain doesn
 
 ### Backward — when problems occur
 
-Apply five whys to the failure. Each iteration tests whether the reason is the root cause:
+Apply the same iterative discipline to the failure: five is the checkpoint, while the load-bearing root cause is the stopping condition. Each iteration tests whether the reason is the root cause:
 
 - Could it have been prevented? Could it have been detected?
 - If the reason is human error, **why was the human error possible?**
@@ -129,7 +129,7 @@ Refuse "human error" as a terminal explanation. The next why is structural — t
 
 **Blame the system, never the operator.** The discipline is finding the why, not assigning the who. Ad-hominem analysis is a methodology violation, not a politeness preference.
 
-Five is the floor, not the ceiling. Stop when you're confident you've reached the root cause; not before. Sometimes three iterations is enough; sometimes seven is needed. The technique is procedural depth when it matters, not five-iteration ritual.
+Stop when you're confident you've reached the root cause; not before. Sometimes three iterations is enough; sometimes seven is needed. The technique is procedural depth when it matters, not five-iteration ritual.
 
 Mode overrides apply (Section 6). In `explore`, the chain may not be complete yet — instinct-driven work is allowed; defer the chain to the writeup. In `firefight`, **the principle is deferred entirely** — act, rollback, then run five whys in the postmortem. In `harden`/`ship`, the chain is a publication-time gate. In `review`, every finding traces to a why.
 
@@ -144,10 +144,10 @@ Mirepoix work happens in distinct modes. Each mode rebalances the five principle
 Mode is **elicited from the operator**, not inferred silently:
 
 - **At activation:** the skill prompts — *"Which mode are we operating in?"* — and surfaces the eight options (defaulting to `build` if the operator declines to choose).
-- **Mid-session:** mode changes are explicit — `/mise-en-place mode [name]` re-prompts the operator to confirm.
+- **Mid-session:** `/mise-en-place mode [name]` with a valid mode activates it directly, without another choice prompt. The agent confirms the resulting mode declaratively; it does not ask a redundant confirmation question.
 - **Inferred suggestions:** when context implies a different mode (incident page → `firefight`, release-branch PR → `ship`, brainstorm prompt → `explore`, schema migration → `migrate`, large structural diff with no behavior change → `refactor`), the skill *recommends* the switch but does not auto-apply it.
 
-The active mode is surfaced via footer-as-surface. The chef's call-out format: `mise-en-place: build`, `mise-en-place: harden`, etc.
+The active mode is surfaced via footer-as-surface: the final status line of each substantive agent response uses the chef's call-out format (`mise-en-place: build`, `mise-en-place: harden`, etc.). "Footer" means this response footer, not the host application's TUI status line; the skill cannot configure host UI chrome.
 
 **Eight modes. One active at a time.** Single-mode keeps rule conflicts out of the system; if you need a different posture, switch modes — don't compose them. The set is *not closed* — new modes are welcome, but each must occupy a behavioral cell no existing mode covers.
 
@@ -193,7 +193,7 @@ Same five principles as `build`, but with tighter gates:
 - **#4 strengthened:** success criteria includes a deploy-readiness checklist — ADR exists if breaking, migrations are reversible, observability is in place.
 - **#5 strengthened:** deploy-readiness includes the why-chain trace. "This ships now because [customer commitment date / strategic premise / time-sensitive opportunity] — the chain terminates in a load-bearing premise." If the chain terminates in "...because we said we would," the merge is on schedule-pressure, not strategic-pressure — surface that. The **canonical-state-verification iteration** (§5 Forward) is mandatory before any destructive operation in the ship path — tag creation, release publication, image push.
 
-The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks the merge — see Section 7 / Multi-agent review.
+The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks delivery until it is resolved and re-reviewed or a human explicitly records a waiver — see Section 7 / Multi-agent review.
 
 ### `firefight` — incident, outage, hot-fix
 
@@ -241,7 +241,7 @@ Reshape without changing what the code does. The diff is large by design.
 - **#2 reframed:** "simplicity" is the *output*, not the constraint. The diff itself can be large; the resulting code must be simpler than what it replaced.
 - **#3 inverted in spirit:** the diff will span many lines by design. The new test: every changed line preserves observable behavior. No functional changes ride along.
 - **#4 explicit:** tests must pass before AND after, with no functional differences. Behavioral parity *is* the success criterion. If tests don't exist, write them first — then refactor.
-- **#5 applied to the refactor's existence:** "Why this refactor now?" must terminate in a load-bearing premise (architecture debt, scaling pressure, vocabulary alignment per ADR-014, ACP-server work surfacing MS-X friction, etc.). A refactor whose why-chain terminates in "...because the code looked ugly" is under-justified — refactor-for-aesthetics is among the most expensive ways to spend time.
+- **#5 applied to the refactor's existence:** "Why this refactor now?" must terminate in a load-bearing premise (architecture debt, scaling pressure, vocabulary alignment per ADR-014, `@mirepoix/acp` work surfacing MS-X friction, etc.). A refactor whose why-chain terminates in "...because the code looked ugly" is under-justified — refactor-for-aesthetics is among the most expensive ways to spend time.
 
 If a refactor surfaces a real bug along the way, exit `refactor` mode explicitly before fixing it. Bugs are out of scope for the refactor diff.
 
@@ -299,7 +299,10 @@ Decisions that bind future behavior become ADRs (the 001-009 sequence sets the p
 
 When the project declares a reviewer list, high-stakes review and gate work
 dispatches to those reviewers in parallel rather than to a single agent.
-Reconciliation is unanimous APPROVE — any REQUEST_CHANGES blocks the phase.
+Reconciliation requires unanimous APPROVE. Any REQUEST_CHANGES blocks delivery
+until the finding is resolved and re-reviewed, or a human explicitly records a
+waiver that identifies the finding and rationale. Retry exhaustion never implies
+approval: an agent must stop and surface the block rather than silently continue.
 The reviewer identifiers are project-defined (typically via a
 `## Multi-agent review` section in the project's `CLAUDE.md`); this contract
 specifies the dispatch and reconciliation shape, not the vocabulary.
@@ -314,7 +317,7 @@ a single-reviewer pass had APPROVE'd past.
 
 These are recognized Mirepoix primitives that don't yet meet the universal-applicability bar to be in the starter set. They're documented here so promotion later is a deliberate decision, not a rediscovery.
 
-- **Footer-as-surface** — status, active mode, pending decisions, and unresolved questions live in the footer where the user can glance at them, not buried in conversation. *Why not promoted:* it's a UI/output discipline rather than a behavioral rule. Mode-elicitation in Section 6a still relies on it as a mechanism.
+- **Footer-as-surface** — status, active mode, pending decisions, and unresolved questions live in the final status line of substantive responses where the user can glance at them, not buried in conversation. This response footer is not the host application's TUI status line. *Why not promoted:* it's an output discipline rather than a behavioral rule. Mode-elicitation in Section 6a still relies on it as a mechanism.
 - **Hooks (listener vs gate)** — when proposing automation, default to listener (observe and report); promote to gate (refuse if conditions unmet) only when blast radius warrants. *Why not promoted:* applies only when proposing automation, not on every task.
 
 Other candidates worth considering on a later pass: provenance/citation rules, multi-agent handoff protocol, working-memory vs. memory-system rules.
@@ -330,7 +333,7 @@ The mise-en-place is set if:
 - Clarifying questions come before implementation, not after mistakes (#1 holding).
 - Every shipped change has a verifier — a test, an eval, or an explicit waiver (#4 holding).
 - Every substantive action has a why-chain that traces to a load-bearing premise; problems decompose into structural causes, not human error (#5 holding).
-- The active mode is always knowable from the footer, and mode transitions are explicit (Section 6 holding).
+- The active mode is always knowable from the response footer, and mode transitions are explicitly acknowledged (Section 6 holding).
 - Skills are invoked rather than reinvented; gates are rare; listeners are common; ADRs precede commitments; multi-agent review fires on declared reviewer lists (Section 7 holding).
 
 If any of these slip, the mise-en-place is leaking — fix the leak before adding more rules.

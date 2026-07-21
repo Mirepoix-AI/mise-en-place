@@ -29,7 +29,7 @@ The addendum codifies the *dispatch and reconciliation shape*. The *reviewer-ide
 
 - The name: "Multi-agent review"
 - The principle: high-stakes review and gate work dispatches to multiple agents in parallel when the project declares a reviewer list
-- The reconciliation rule: unanimous APPROVE — any REQUEST_CHANGES blocks the phase
+- The reconciliation rule: unanimous APPROVE — any REQUEST_CHANGES blocks delivery until resolved and re-reviewed or explicitly waived by a human; retry exhaustion must not silently continue the phase
 - The activation convention: project-level `CLAUDE.md` declares the reviewer list (typically via a `## Multi-agent review` section)
 - An empirical-evidence pointer to `UlyssesModel/kavara-mirepoix-internal#11` and `#12`
 
@@ -58,7 +58,7 @@ MINOR bump per SemVer — behavior addition, no breaking change.
 
 ## Success criteria
 
-1. `contract.md` has a fifth addendum following the structural pattern of addenda #1–4.
+1. `contract.md` has a fifth addendum following the structural pattern of addenda #1–4, with requested changes remaining blocking unless a human explicitly records a waiver.
 2. `MODES.md` has brief cross-references for `review` and `ship` to the new addendum.
 3. `CHANGELOG.md` has a `0.4.0` entry with the empirical-evidence pointers and promotion-criteria justification.
 4. Both `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` report version `0.4.0`.
@@ -98,7 +98,7 @@ MINOR bump per SemVer — behavior addition, no breaking change.
 ## Notes for the architect during PLAN
 
 - **Read `contract.md` before drafting.** The four existing addenda are short and structural; addendum #5 should match that voice and length. If your draft is two paragraphs explaining context, that's over-explanation — the contract text should be principle-stating, not justification-providing. The CHANGELOG is where the justification lives.
-- **The reconciliation rule (unanimity) is the load-bearing architectural commitment.** Make sure the contract text is unambiguous: "any REQUEST_CHANGES blocks the phase." This is the property that produced PR #12's wins.
+- **The reconciliation rule (unanimity) is the load-bearing architectural commitment.** Make sure the contract text is unambiguous: REQUEST_CHANGES blocks delivery until resolved and re-reviewed or explicitly waived by a human. Retry exhaustion is not approval and must never cause silent continuation. This is the property that produced PR #12's wins.
 - **The empirical-evidence references belong in the contract**, not just the CHANGELOG. Future readers should see the empirical justification in the contract itself — "this pattern is in the contract because PR #11 and #12 demonstrated it." Without that reference, future operators may treat the addendum as theoretical.
 - **The addendum is project-agnostic.** Reviewer identifiers are arbitrary strings the contract doesn't enumerate. Don't write "claude and codex"; write "the reviewer identifiers declared by the project."
 - **Promotion criteria justification doesn't need to be in the addendum text** — that's the CHANGELOG's job. But verify each of the three criteria holds: *universally applicable* (any review work benefits), *foundational* (review is part of every coding workflow), *non-obvious* (not default agent behavior).

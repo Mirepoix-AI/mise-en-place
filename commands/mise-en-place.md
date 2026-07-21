@@ -10,10 +10,10 @@ If $ARGUMENTS is empty, follow the skill's default activation flow:
 
 - Elicit the active mode from the operator. The eight modes are: `build`, `explore`, `harden`, `ship`, `firefight`, `review`, `migrate`, `refactor`.
 - Default to `build` if the operator declines to choose.
-- Surface the active mode for the rest of the session (footer-as-surface pattern).
+- Surface the active mode in the final status line of substantive responses (response-footer pattern; not the host TUI status line).
 - Apply the five principles (Karpathy four + Justified Action / Five Whys per ADR-016) plus the mode-specific overrides plus the Mirepoix addenda.
 
-If $ARGUMENTS starts with `mode ` followed by one of the eight mode names, activate the skill directly in that mode without re-eliciting. Confirm the chosen mode and proceed.
+If $ARGUMENTS starts with `mode ` followed by one of the eight mode names, activate the skill directly in that mode without re-eliciting or asking a redundant confirmation question. Confirm the resulting mode declaratively and proceed.
 
 If $ARGUMENTS contains anything else, treat it as operator commentary and ask whether they intended a mode switch or a different action.
 

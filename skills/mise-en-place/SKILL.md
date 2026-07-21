@@ -10,7 +10,7 @@ Activates the Mirepoix agent behavioral contract documented in `references/contr
 ## What this skill does
 
 1. **Elicits the active mode** from the operator — does not assume.
-2. **Surfaces the active mode** in the footer (`mise-en-place: [mode]`) for the rest of the session.
+2. **Surfaces the active mode** in the response footer (`mise-en-place: [mode]`) for the rest of the session.
 3. **Applies the five principles + mode overrides + addenda** to subsequent agent behavior.
 
 This skill embodies its own principle #1 ("don't assume; ask") by activating only when the operator declares posture.
@@ -38,14 +38,14 @@ If context strongly suggests a non-default mode (incident page, release-branch P
 
 ## Switching mid-session
 
-The operator can switch modes at any point with `/mise-en-place mode [name]`. Re-prompt to confirm the switch and update the footer. Do not switch silently — mode transitions must be visible.
+The operator can switch modes at any point with `/mise-en-place mode [name]`. A valid mode name activates directly without re-elicitation or a redundant confirmation question. Acknowledge the resulting mode declaratively and update the response footer; do not switch silently.
 
 ## What to load
 
 Once a mode is active, the agent operates under:
 
 1. The five principles (Sections 1-5 of `references/contract.md`) — fixed.
-   - Principles 1-4: Karpathy-derived (verbatim from upstream).
+   - Principles 1-4: adapted from the Karpathy-derived upstream.
    - Principle 5: Justified Action / Five Whys — Mirepoix-augmented per ADR-016.
 2. The mode-specific overrides (Section 6b) — different per mode.
 3. The five starter addenda (Section 7) — Skills, Evaluation packs, Meta-agent decomposition, ADRs, Multi-agent review.
@@ -58,13 +58,13 @@ Some modes have explicit postconditions the skill should track:
 
 - **`firefight`**: emit a postmortem stub **including the five-whys causal chain (not just a chronology)** and a list of `HACK(firefight)` tags to triage at session end.
 - **`migrate`**: emit a runbook entry covering forward, reverse, and verification steps; both forward and reverse why-chains required.
-- **`spike`/`explore`**: ensure code is on a separate branch and tagged deletable; the mode-exit writeup captures the why-chain that exploration surfaced.
+- **`explore`**: ensure code is on a separate branch and tagged deletable; the mode-exit writeup captures the why-chain that exploration surfaced.
 
 ## Invariants
 
 - The five principles never change. Modes do not relax them — modes shift their *application*.
 - One mode active at a time. No composition.
-- Mode is always knowable from the footer. If the footer doesn't show a mode, the skill isn't active — re-elicit.
+- Mode is always knowable from the final status line of each substantive response. This response footer is not the host application's TUI status line. If the response footer doesn't show a mode, the skill isn't active — re-elicit.
 - Modes and addenda are *starter sets, not closed*. New entries are deliberate additions, not silent ones.
 - Principle 5 is foundational and applies in every mode, with mode-specific relaxation in `explore` and deferral in `firefight`. See contract §5 and §6b.
 

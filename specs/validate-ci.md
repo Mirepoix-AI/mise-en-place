@@ -2,7 +2,7 @@
 
 ## Goal
 
-Add CI to the mise-en-place repo that catches the validator-rejection class of bug we hit in commit `fcb93f5` (XML-like tag in SKILL.md frontmatter description tripped Cowork's plugin validator). The CI should run on every push and PR and fail if any of the three checks below fail.
+Add CI to the mise-en-place repo that catches the validator-rejection class of bug we hit in commit `fcb93f5` (XML-like tag in SKILL.md frontmatter description tripped Cowork's plugin validator). The CI runs on every push and PR and combines focused repository checks with Claude Code's official strict validator and a Cowork archive-content regression check.
 
 ## Checks
 
@@ -13,8 +13,9 @@ Validate `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`:
 - Both files exist.
 - Both parse as valid JSON.
 - `plugin.json` has required fields: `name`, `version`, `description`.
-- `marketplace.json` has required fields: `name`, `owner`, `plugins` (non-empty array).
+- `marketplace.json` has required fields: `name`, `description`, `owner`, `plugins` (non-empty array).
 - Each entry in `marketplace.json`'s `plugins` array has `name`, `source`, `description`.
+- The marketplace entry's `name` and `version` match `plugin.json`.
 - The `name` field in both files is kebab-case (lowercase letters, numbers, hyphens only).
 
 ### 2. SKILL.md frontmatter integrity
@@ -38,6 +39,14 @@ For every `skills/*/SKILL.md` file:
 
 This catches the kind of break we'd cause if someone moved `references/contract.md` without updating the SKILL.md references.
 
+### 4. Official strict validation
+
+Run `npx --yes @anthropic-ai/claude-code@2.1.216 plugin validate . --strict` so warnings accepted by the runtime cannot drift into a release.
+
+### 5. Cowork archive contents
+
+Build the documented `.plugin` archive and verify it contains both activation surfaces: `skills/mise-en-place/SKILL.md` and `commands/mise-en-place.md`, plus both manifests and the canonical contract.
+
 ## Implementation
 
 ### Files to create
@@ -47,10 +56,12 @@ This catches the kind of break we'd cause if someone moved `references/contract.
 | `.github/workflows/validate.yml` | GitHub Actions workflow definition |
 | `.github/scripts/validate_plugin.py` | Validation script (entry point) |
 | `.github/scripts/test_validate_plugin.py` | Tests for the validation script |
+| `scripts/build_cowork_bundle.py` | Reproducible Cowork archive builder and inspector |
+| `.github/scripts/test_build_cowork_bundle.py` | Archive-content regression tests |
 
 ### Constraints
 
-- **Python 3.11+, standard library only.** No `pip install` step, no external runtime dependencies. Use `json`, `pathlib`, `re`. For SKILL.md frontmatter parse a hand-rolled minimal-YAML reader that handles single-line `key: value` pairs only — that's all the frontmatter actually contains.
+- **Python 3.11+, standard library only for repository-owned validation and packaging.** No `pip install` step. Use `json`, `pathlib`, `re`, and `zipfile`. For SKILL.md frontmatter parse a hand-rolled minimal-YAML reader that handles single-line `key: value` pairs only — that's all the frontmatter actually contains. The separately pinned Claude Code CLI is the official-validator dependency.
 - **Tests use `unittest`** (stdlib), not pytest. Same dependency-minimization reasoning.
 - **Validator exits 1 on any failure**, with a clear human-readable error message naming the file and the failing check (e.g. `skills/mise-en-place/SKILL.md: description contains XML-like tag <test>`).
 - **Workflow uses `actions/checkout@v4` and `actions/setup-python@v5`.**
@@ -66,7 +77,9 @@ This catches the kind of break we'd cause if someone moved `references/contract.
 2. Temporarily adding `<test>` to `skills/mise-en-place/SKILL.md`'s frontmatter description, then re-running the validator, exits 1 with a message naming the file and the offending tag.
 3. Temporarily renaming `skills/mise-en-place/references/contract.md` to something else, then re-running the validator, exits 1 with a message about the missing reference.
 4. `python -m unittest discover .github/scripts -p 'test_*.py'` exits 0 with at least 5 test cases covering: valid manifests, invalid JSON, missing required fields, XML-like tag in description, broken relative reference.
-5. The workflow runs on a real GitHub push and reports pass/fail in the PR/commit checks UI.
+5. `npx --yes @anthropic-ai/claude-code@2.1.216 plugin validate . --strict` exits 0.
+6. The built Cowork archive contains `commands/mise-en-place.md` as well as the skill and manifest surfaces.
+7. The workflow runs on a real GitHub push and reports pass/fail in the PR/commit checks UI.
 
 ## Out of scope
 

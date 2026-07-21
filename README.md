@@ -14,7 +14,7 @@
 2. **Simplicity First** — Karpathy-derived. Minimum code that solves the problem; nothing speculative.
 3. **Surgical Changes** — Karpathy-derived. Touch only what you must; clean up only your own mess.
 4. **Goal-Driven Execution** — Karpathy-derived. Define success criteria; loop until verified.
-5. **Justified Action / Five Whys** — Mirepoix-augmented (added v0.5.0 per ADR-016). Every action serves a why-chain traceable to a root premise within five iterations. Time is the operator's most valuable commodity; no spent unit deserves to be unjustified. Blame the system, never the operator.
+5. **Justified Action / Five Whys** — Mirepoix-augmented (added v0.5.0 per ADR-016). Every substantive action serves an iterative why-chain traceable to a load-bearing root premise. Five iterations is a checkpoint, not a quota or hard limit. Time is the operator's most valuable commodity; blame the system, never the operator.
 
 ## Repository structure
 
@@ -50,14 +50,15 @@ Restart Claude Code. The skill will appear under `/plugin` → Installed.
 
 ### Cowork (desktop)
 
-The Cowork plugin manager accepts the bundled `.plugin` file directly. Build it with:
+The Cowork plugin manager accepts the bundled `.plugin` file directly. Build the canonical bundle with:
 
 ```bash
 cd /path/to/mise-en-place
-zip -r /tmp/mise-en-place.plugin .claude-plugin skills README.md LICENSE
+python3 scripts/build_cowork_bundle.py --output /tmp/mise-en-place.plugin
+python3 scripts/build_cowork_bundle.py --check /tmp/mise-en-place.plugin
 ```
 
-Then drag `/tmp/mise-en-place.plugin` into Cowork's plugin install affordance.
+The bundle includes both activation surfaces: `skills/` and `commands/`, plus the manifests and supporting metadata. Then drag `/tmp/mise-en-place.plugin` into Cowork's plugin install affordance.
 
 ## Usage
 
@@ -76,19 +77,21 @@ Eight operating modes — see [MODES.md](./MODES.md) for the index, or [contract
 - New modes must occupy a behavioral cell no existing mode covers.
 - New addenda must be universally applicable, foundational, and non-obvious.
 - One mode active at a time. No composition.
-- Mode is always knowable from the footer (`mise-en-place: [mode]`).
+- Mode is always knowable from the final status line of substantive responses (`mise-en-place: [mode]`). This response footer is not the host application's TUI status line.
 
 ## Lineage
 
-Principles 1-4 are kept verbatim from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md) (MIT-licensed upstream). Principle 5 is Mirepoix-augmented from Amazon's [Well-Architected Five Whys](https://wa.aws.amazon.com/) — the technique is upstream, the foundational placement and the mode-specific override structure are Mirepoix's. Everything wrapped around the principles — modes, addenda, elicitation flow, the name itself — is Mirepoix-native. See [ADR-016](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md) for the architectural commitment that authorized the fifth principle.
+Principles 1-4 are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md) (MIT-licensed upstream). Principle 5 is Mirepoix-augmented from Amazon's [Well-Architected Five Whys](https://wa.aws.amazon.com/) — the technique is upstream, the foundational placement and the mode-specific override structure are Mirepoix's. Everything wrapped around the principles — modes, addenda, elicitation flow, the name itself — is Mirepoix-native. See [ADR-016](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md) for the architectural commitment that authorized the fifth principle.
 
 ## CI
 
 Every push and pull request to `main` runs `.github/workflows/validate.yml`,
-which checks JSON manifest validity, SKILL.md frontmatter integrity (including
-an XML-tag ban that prevents the `fcb93f5` regression), relative-reference
-integrity across all skill files, and the presence of the "## 5. Justified Action"
-heading in the canonical contract (per ADR-016 invariant). No external dependencies — stdlib Python only.
+which checks JSON manifest validity and parity, SKILL.md frontmatter integrity
+(including an XML-tag ban that prevents the `fcb93f5` regression), relative
+references, and the canonical Principle 5 invariant. CI also runs Claude Code's
+official plugin validator in strict mode and builds and inspects the Cowork
+archive, including its slash-command surface. The repository validator and its
+tests remain stdlib-only; the official validator is pinned in the workflow.
 See [`.github/scripts/README.md`](./.github/scripts/README.md) for details.
 
 ## Status

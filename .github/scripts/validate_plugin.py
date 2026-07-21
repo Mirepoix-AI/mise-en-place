@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Validator for the mise-en-place Claude plugin marketplace repo.
 
-Three checks (per specs/validate-ci.md):
+Five checks:
   1. JSON manifest validity for .claude-plugin/plugin.json and
      .claude-plugin/marketplace.json (required fields + kebab-case names).
-  2. SKILL.md frontmatter integrity for every skills/*/SKILL.md
+  2. Plugin/marketplace name and version parity.
+  3. SKILL.md frontmatter integrity for every skills/*/SKILL.md
      (name + description present; description has no XML-like tags).
-  3. Relative-reference integrity: every backtick-quoted .md path in a
+  4. Relative-reference integrity: every backtick-quoted .md path in a
      SKILL.md body must resolve to an existing file on disk.
+  5. The canonical Principle 5 contract invariant.
 
 Exit codes:
   0 — no errors.
@@ -122,7 +124,7 @@ def validate_marketplace_json(
     if data is None:
         return errors
 
-    for field in ("name", "owner", "plugins"):
+    for field in ("name", "description", "owner", "plugins"):
         if field not in data:
             errors.append(f"{rel}: missing required field '{field}'")
 
@@ -150,6 +152,45 @@ def validate_marketplace_json(
                     errors.append(f"{prefix}: name '{entry_name}' is not kebab-case")
 
     return errors
+
+
+def validate_manifest_parity(
+    plugin_path: pathlib.Path,
+    marketplace_path: pathlib.Path,
+    repo_root: Optional[pathlib.Path] = None,
+) -> list[str]:
+    """Check 2. The single marketplace entry must match plugin name and version."""
+    repo_root = repo_root if repo_root is not None else DEFAULT_REPO_ROOT
+    plugin, plugin_errors = _load_json(plugin_path, repo_root)
+    marketplace, marketplace_errors = _load_json(marketplace_path, repo_root)
+    if plugin_errors or marketplace_errors or plugin is None or marketplace is None:
+        # The manifest validators report malformed or missing files directly.
+        return []
+
+    plugin_name = plugin.get("name")
+    plugin_version = plugin.get("version")
+    entries = marketplace.get("plugins")
+    if not isinstance(plugin_name, str) or not isinstance(entries, list):
+        return []
+
+    matches = [
+        entry
+        for entry in entries
+        if isinstance(entry, dict) and entry.get("name") == plugin_name
+    ]
+    rel = _rel(marketplace_path, repo_root)
+    if len(matches) != 1:
+        return [
+            f"{rel}: expected exactly one plugin entry named '{plugin_name}', found {len(matches)}"
+        ]
+
+    marketplace_version = matches[0].get("version")
+    if marketplace_version != plugin_version:
+        return [
+            f"{rel}: plugin '{plugin_name}' version '{marketplace_version}' does not match "
+            f"plugin.json version '{plugin_version}'"
+        ]
+    return []
 
 
 # ---------------------------------------------------------------------------
@@ -469,6 +510,7 @@ def _run_checks(repo_root: pathlib.Path) -> tuple[list[str], int]:
     errors: list[str] = []
     errors.extend(validate_plugin_json(plugin_json, repo_root))
     errors.extend(validate_marketplace_json(marketplace_json, repo_root))
+    errors.extend(validate_manifest_parity(plugin_json, marketplace_json, repo_root))
     errors.extend(validate_contract_principle_5(contract_md, repo_root))
 
     skill_files = find_skill_files(skills_dir)

@@ -55,7 +55,7 @@ Postcondition: a writeup or ADR. The code is deletable by design.
 
 All five principles strengthen. Assumptions stated *and* verified, no new dependencies, every line traces to the merge target's intent, deploy-readiness checklist met. #5 strengthens to "why-this-ships-now chain" — the why must terminate in a load-bearing premise, not "...because we said we would." No assumed-green CI.
 
-The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks the merge — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
+The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks delivery until resolved and re-reviewed or explicitly waived by a human. Retry exhaustion is not approval — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
 [Full contract →](skills/mise-en-place/references/contract.md#6b-the-eight-modes)
 
 ### `firefight`
@@ -68,7 +68,7 @@ Postcondition: postmortem stub including the five-whys causal chain (not just ch
 
 All five principles reframed as **surfacing**, not **doing**. Flag tradeoffs and concerns rather than fix them; don't suggest changes beyond the review's scope. Success is decision-quality feedback, not an action-item list. #5 applies to findings — every flagged finding traces to at least one iteration of why; "this looks wrong" is insufficient. If a review uncovers something that demands a write, exit `review` mode explicitly first.
 
-When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
+When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE; requested changes remain blocking unless a human explicitly records a waiver — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
 [Full contract →](skills/mise-en-place/references/contract.md#6b-the-eight-modes)
 
 ### `migrate`

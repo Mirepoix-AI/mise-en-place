@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/); the
 plugin uses [SemVer](https://semver.org/): MAJOR for contract-breaking,
 MINOR for behavior additions, PATCH for fixes that don't change behavior.
 
+## [Unreleased]
+
+### Fixed
+
+- Restored plugin/marketplace version parity at `0.5.1` and added the marketplace description required by Claude Code's strict validator.
+- Reconciled the canonical contract and activation surfaces: `explore` is the only exploratory mode; direct mode switches acknowledge rather than re-prompt; Five Whys uses five as a checkpoint rather than a quota; footer means a response footer, not host UI chrome; and the ACP package example uses `@mirepoix/acp`.
+- Replaced inaccurate claims that Principles 1–4 are verbatim with accurate adaptation language.
+- Strengthened multi-agent reconciliation: requested changes block delivery until resolved and re-reviewed or explicitly waived by a human; retry exhaustion cannot silently become approval.
+
+### Added
+
+- Official strict Claude plugin validation and manifest-parity checks in CI.
+- A reproducible Cowork bundle builder and archive regression test covering both the skill and slash-command activation surfaces.
+
+### Removed
+
+- The unscheduled DDD addendum release promise; no authoritative repository tracker commits it to a version.
+
 ## [0.5.1] — 2026-05-21
 
 Clarifies Principle 5 (Justified Action / Five Whys) with an explicit binding rule for destructive operations: the **canonical-state-verification iteration** is mandatory in the forward chain before `git tag`, schema migration, deployment, or any irreversible operation. Patch release — no new behavior, no API change, no contract restructure; existing principle's application made operational.
@@ -36,7 +54,6 @@ The Layer 1 release-pipeline wrapper `UlyssesModel/on-loop/bin/on-loop-tag` (PR 
 | v0.4.0 | Addendum #5: Multi-agent review | Shipped 2026-05-15 |
 | v0.5.0 | Principle 5: Justified Action | Shipped 2026-05-20 (PR #6) |
 | **v0.5.1** | **Principle 5 clarification: canonical-state-verification iteration for destructive ops** | **This release** |
-| v0.6.0 | Addendum #6: DDD vocabulary discipline (ADR-014 Follow-up 2) | Future |
 
 ### Follow-up
 
@@ -50,7 +67,7 @@ ADR-016 (`adrs/ADR-016-mise-en-place-principle-5.md` in `kavara-mirepoix-interna
 
 Adds the fifth foundational principle: **Justified Action / Five Whys**. The principle is Mirepoix-augmented from Amazon's Well-Architected framework, elevated to the same structural layer as Karpathy's four (the "fixed invariants" tier). Architectural authority: [ADR-016 in kavara-mirepoix-internal](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md).
 
-The principle covers both forward justification (articulate the why-chain before substantive work) and backward causal analysis (apply five whys to failures, refusing "human error" as a terminal explanation). The discipline is procedural: blame the system, never the operator; five iterations is the floor, not a ceiling.
+The principle covers both forward justification (articulate the why-chain before substantive work) and backward causal analysis (apply five whys to failures, refusing "human error" as a terminal explanation). The discipline is procedural: blame the system, never the operator; five iterations is a forcing-function checkpoint rather than a ritual or hard limit.
 
 ### Added
 
@@ -64,7 +81,7 @@ The principle covers both forward justification (articulate the why-chain before
 
 ### Changed
 
-- **Contract sectioning renumbered**: Section 5 (Modes) → 6, Section 6 (Mirepoix Addenda) → 7, Section 7 (Acceptance Test) → 8. The v0.4.0 addendum #5 (Multi-agent review) is preserved verbatim in the new Section 7.
+- **Contract sectioning renumbered**: Section 5 (Modes) → 6, Section 6 (Mirepoix Addenda) → 7, Section 7 (Acceptance Test) → 8. The v0.4.0 addendum #5 (Multi-agent review) is preserved unchanged in the new Section 7.
 - **MODES.md cross-references** updated from §5b to §6b throughout. The two `ship` and `review` mode cross-refs to the Multi-agent review addendum updated from §6 to §7.
 - **README.md "four principles" framing** restructured to "five principles, eight modes, five addenda."
 - **SKILL.md activation flow** now surfaces Principle 5 alongside the active-mode elicitation. "Sections 1-4" → "Sections 1-5"; "Section 5b" → "Section 6b"; "Section 6" addenda reference → "Section 7."
@@ -77,7 +94,6 @@ The principle covers both forward justification (articulate the why-chain before
 | v0.3.0 | Slash command surface | 2026-05-09 |
 | v0.4.0 | Addendum #5: Multi-agent review | 2026-05-15 |
 | **v0.5.0** | **Principle 5: Justified Action (this release)** | **2026-05-20** |
-| v0.6.0 | Addendum #6: DDD vocabulary discipline (ADR-014 Follow-up 2) | Future |
 
 ### Notes for operators
 

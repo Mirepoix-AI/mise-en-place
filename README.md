@@ -100,6 +100,6 @@ Internal artifact, work-in-progress. Iteration expected; the contract should lea
 
 ## License
 
-Proprietary — Copyright (c) 2026 Kavara. All rights reserved. Internal use only. See [LICENSE](./LICENSE) for full terms and upstream attribution.
+Proprietary — Copyright (c) 2026 Mirepoix AI. All rights reserved. Internal use only. See [LICENSE](./LICENSE) for full terms and upstream attribution.
 
 Principles 1-4 in the bundled contract (`skills/mise-en-place/references/contract.md`) are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md), which is MIT-licensed. Principle 5 is Mirepoix-augmented from Amazon's Well-Architected framework (also openly published; Mirepoix's contribution is the foundational placement and mode-specific overrides). Everything else (modes, addenda, elicitation flow, skill wrapper) is Kavara-proprietary.

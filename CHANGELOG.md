@@ -7,12 +7,14 @@ MINOR for behavior additions, PATCH for fixes that don't change behavior.
 
 ## [Unreleased]
 
+Consolidated onto [Mirepoix-AI/mise-en-place](https://github.com/Mirepoix-AI/mise-en-place), the canonical home. This line and the `[0.6.0]` line below were developed in parallel repositories; they are reunited here, and manifest homepage links now point to this repository.
+
 ### Fixed
 
-- Restored plugin/marketplace version parity at `0.5.1` and added the marketplace description required by Claude Code's strict validator.
+- Restored plugin/marketplace version parity (now `0.6.0`) and added the marketplace description required by Claude Code's strict validator.
 - Reconciled the canonical contract and activation surfaces: `explore` is the only exploratory mode; direct mode switches acknowledge rather than re-prompt; Five Whys uses five as a checkpoint rather than a quota; footer means a response footer, not host UI chrome; and the ACP package example uses `@mirepoix/acp`.
 - Replaced inaccurate claims that Principles 1–4 are verbatim with accurate adaptation language.
-- Strengthened multi-agent reconciliation: requested changes block delivery until resolved and re-reviewed or explicitly waived by a human; retry exhaustion cannot silently become approval.
+- Multi-agent reconciliation now follows `[0.6.0]` §7 (ADR-025): a parallel draft of the same rule on this line was superseded by it. `MODES.md` keeps this line's "retry exhaustion is not approval" pointer.
 
 ### Added
 
@@ -22,6 +24,34 @@ MINOR for behavior additions, PATCH for fixes that don't change behavior.
 ### Removed
 
 - The unscheduled DDD addendum release promise; no authoritative repository tracker commits it to a version.
+
+## [0.6.0] — 2026-09-10
+
+Two decisions land in the contract: [ADR-024](https://github.com/Mirepoix-AI/mirepoix/blob/main/adrs/ADR-024-justified-action-stopping-rule.md) (Principle 5's stopping rule) and [ADR-025](https://github.com/Mirepoix-AI/mirepoix/blob/main/adrs/ADR-025-multi-agent-review-waiver.md) (the multi-agent review waiver), both accepted 2026-09-10.
+
+**Why 0.6.0.** MINOR under this file's own SemVer statement: ADR-025 adds behavior. ADR-016's version trajectory lists v0.6.0 against addendum #6 (DDD vocabulary discipline) as *"Future; targeted post-v0.5.0"* — a target, not a reservation. Version numbers are assigned at ship time; addendum #6 takes the next slot when it ships. Skipping to 0.7.0 would encode an unshipped plan into the version history.
+
+**First tagged release.** The repository carried no git tag and no GitHub release before this one — `v0.5.1` and every earlier version existed only in `CHANGELOG.md` and `plugin.json`, so there was nothing to pin an install to. `v0.6.0` is the first. Earlier versions are not being backfilled: a tag asserts which bytes shipped, and reconstructing that after the fact from a changelog would assert something never measured.
+
+Empirical motivation for both: on 2026-09-10 the copy of `contract.md` governing agents on the maintainer's machine (`~/.agents/skills/mise-en-place/`, not under version control) was found drifted from this repository for three months. Its edits included independent rewrites of exactly these two rules — evidence that both defects were hit in practice, not authority to install the fixes, which is what the two ADRs are for.
+
+### Changed
+
+- **§5 Principle 5 headline, Forward, Backward, Posture** — the stopping condition is the load-bearing premise; five iterations is a forcing-function checkpoint, not a floor, a quota or a ceiling. Resolves a contradiction inherited from ADR-016, which stated both "five iterations is the floor" and "stop when the chain reaches a load-bearing root premise", and whose seventh consequence contradicted its own Decision. `contract.md` had carried both readings across six sites.
+- **§5 Forward — new Precedence paragraph** — a destructive-operation precondition outranks every mode override. The contract previously stated no precedence at all.
+- **§6b `firefight` #5 override, the mode signature table, and the load-bearing oddities list** — the deferral of Principle 5 no longer covers the canonical-state-verification precondition. That check is mechanical rather than analytical, and `firefight` is the mode most likely to run an irreversible operation.
+- **§7 Multi-agent review reconciliation** — unanimous APPROVE remains the target, now bounded: a REQUEST_CHANGES blocks delivery until resolved and re-reviewed, or until a human records an explicit waiver naming the finding and its rationale. An agent may not issue that waiver. Retry exhaustion never implies approval — an agent that exhausts its retries must stop and surface the block. Previously the gate had no escape at all, while §8's acceptance test already accepted "an explicit waiver" as a verifier.
+- **§6b `ship` and `review` mode restatements** — follow §7.
+- **`MODES.md`** — the `firefight` oddity, the `firefight` mode entry, and the two multi-agent review cross-references track the contract.
+
+### Not changed
+
+- **§8 Acceptance Test.** [PR #77](https://github.com/Mirepoix-AI/mirepoix/pull/77) amends the same sentence for unrelated reasons; the two are sequenced rather than merged against each other.
+- The five principles, the eight modes, and the five addenda. No principle, mode or addendum was added, removed or renamed. ADR-016's CI invariant (`## 5. Justified Action` heading) is intact.
+
+### Architectural authority
+
+[ADR-024](https://github.com/Mirepoix-AI/mirepoix/blob/main/adrs/ADR-024-justified-action-stopping-rule.md) and [ADR-025](https://github.com/Mirepoix-AI/mirepoix/blob/main/adrs/ADR-025-multi-agent-review-waiver.md), both Accepted 2026-09-10 in `Mirepoix-AI/mirepoix`. Both extend ADR-016 rather than retiring it; ADR-016 carries `Amended by:` header pointers to each.
 
 ## [0.5.1] — 2026-05-21
 

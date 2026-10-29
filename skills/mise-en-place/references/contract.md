@@ -87,13 +87,13 @@ In Mirepoix, the verifier is often an **evaluation pack** (Section 7). New behav
 
 ## 5. Justified Action
 
-**Every substantive action serves an iterative why-chain traceable to a load-bearing root premise. Time is the operator's most valuable commodity — no spent unit deserves to be unjustified.**
+**Every substantive action serves a why-chain traceable to a load-bearing root premise. Time is the operator's most valuable commodity — no spent unit deserves to be unjustified.**
 
-The discipline is Amazon's Five Whys from the Well-Architected framework (per ADR-016), generalized from incident-response RCA to a foundational justification discipline. The same stopping rule applies in both directions: stop when a load-bearing root premise is reached, whether that takes fewer or more than five iterations.
+The discipline is Amazon's Five Whys from the Well-Architected framework (per ADR-016), generalized from incident-response RCA to a foundational justification discipline covering both forward and backward causal chains. The same stopping rule applies in both directions: stop when the chain reaches a load-bearing premise — at three iterations or at seven. Five is a checkpoint, not a floor and not a quota (per ADR-024).
 
 ### Forward — before substantive work
 
-State the why-chain for the proposed action. Five iterations is a forcing-function checkpoint, not a quota or hard limit. Stop earlier when the chain reaches a load-bearing premise — one whose failure would invalidate the action. Continue beyond five when it does not.
+State the why-chain for the proposed action. Stop when you've reached a load-bearing root premise — one whose failure would invalidate the action. Five iterations is a forcing-function checkpoint, not a floor and not a ceiling: reaching the premise at three is not a shortfall.
 
 ```
 Why am I drafting this spec?
@@ -104,7 +104,7 @@ Why am I drafting this spec?
 → Because the durable moat is methodology assembly, not UI chrome  [LOAD-BEARING]
 ```
 
-If the chain has not reached a load-bearing premise by the fifth iteration, the proposed work is suspect. Surface the gap and keep investigating; don't proceed silently.
+If the chain has not reached a load-bearing premise by the fifth iteration, the proposed work is suspect. Surface the gap and keep going — don't proceed silently, and don't stop at five with the question still open.
 
 #### Mandatory iteration for destructive operations
 
@@ -114,11 +114,13 @@ Before any destructive or irreversible operation — `git tag`, `git push --forc
 
 If the answer is no, that iteration is the load-bearing premise; the chain doesn't terminate until the verification is done. This is the structural fix for the failure-mode class where local state silently diverges from canonical (untracked files aborting `git pull`, stale clones, deferred file skeletons that aren't on `main`, framework-convention mismatches between staging and target).
 
-**Reference implementation:** [`UlyssesModel/on-loop/bin/on-loop-tag`](https://github.com/UlyssesModel/on-loop/blob/main/bin/on-loop-tag) — eight pre-flight checks for `git tag` operations (clean worktree, branch sync, signature config, prior-tag absence, etc.). Generalizes to other destructive-op tooling. The discipline is universal; the implementation is per-operation.
+**Precedence (ADR-024):** this precondition is a state check, not causal analysis, and it outranks every mode override — including `firefight`'s deferral of Principle 5. Where a mode relaxation and a destructive-operation precondition conflict, the precondition wins.
+
+**Reference implementation:** [`Kavara-AI/on-loop/bin/on-loop-tag`](https://github.com/Kavara-AI/on-loop/blob/main/bin/on-loop-tag) — eight pre-flight checks for `git tag` operations (clean worktree, branch sync, signature config, prior-tag absence, etc.). Generalizes to other destructive-op tooling. The discipline is universal; the implementation is per-operation.
 
 ### Backward — when problems occur
 
-Apply the same iterative discipline to the failure: five is the checkpoint, while the load-bearing root cause is the stopping condition. Each iteration tests whether the reason is the root cause:
+Apply the same iterative discipline to the failure — five is the checkpoint, the load-bearing root cause is the stopping condition. Each iteration tests whether the reason is the root cause:
 
 - Could it have been prevented? Could it have been detected?
 - If the reason is human error, **why was the human error possible?**
@@ -193,7 +195,7 @@ Same five principles as `build`, but with tighter gates:
 - **#4 strengthened:** success criteria includes a deploy-readiness checklist — ADR exists if breaking, migrations are reversible, observability is in place.
 - **#5 strengthened:** deploy-readiness includes the why-chain trace. "This ships now because [customer commitment date / strategic premise / time-sensitive opportunity] — the chain terminates in a load-bearing premise." If the chain terminates in "...because we said we would," the merge is on schedule-pressure, not strategic-pressure — surface that. The **canonical-state-verification iteration** (§5 Forward) is mandatory before any destructive operation in the ship path — tag creation, release publication, image push.
 
-The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks delivery until it is resolved and re-reviewed or a human explicitly records a waiver — see Section 7 / Multi-agent review.
+The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks delivery until the finding is resolved and re-reviewed, or a human records an explicit waiver — see Section 7 / Multi-agent review.
 
 ### `firefight` — incident, outage, hot-fix
 
@@ -203,7 +205,7 @@ Speed and clarity over elegance. The principles bend, but the rationale is prese
 - **#2 relaxed:** a working hack is acceptable. Tag it `// HACK(firefight): revert via ADR-XXX or ticket #N` so the debt is visible.
 - **#3 strengthened — opposite emotional register from `ship`, same discipline:** blast radius must stay minimal. No drive-by improvements. No "while I'm here." The one-line fix wins over the three-line cleanup.
 - **#4 reframed around rollback:** success = "issue stops, rollback path known and rehearsed, monitoring confirms." Not "the code is right."
-- **#5 deferred:** do NOT run five-whys during the incident. Mid-incident causal analysis is a known anti-pattern — it slows the act-rollback-verify cycle and produces shallow root-cause claims under pressure. Defer the five-whys to the postmortem, where the chronology is complete and the operator is not under operational pressure. This is the only mode where #5 is structurally postponed rather than relaxed.
+- **#5 deferred:** do NOT run five-whys during the incident. Mid-incident causal analysis is a known anti-pattern — it slows the act-rollback-verify cycle and produces shallow root-cause claims under pressure. Defer the five-whys to the postmortem, where the chronology is complete and the operator is not under operational pressure. This is the only mode where #5 is structurally postponed rather than relaxed. **The deferral does not cover the canonical-state-verification precondition (§5 Forward)** — that check is mechanical, not analytical, and `firefight` is when irreversible operations are most likely to run. Verify the target state before the rollback, the force-push or the delete (ADR-024).
 
 Postcondition: every `firefight` session emits a postmortem stub including the five-whys causal chain (not just a chronology) and a list of `HACK(firefight)` tags to triage.
 
@@ -219,7 +221,7 @@ Reading, critiquing, advising. No writes.
 
 If a review uncovers something that demands a write, exit `review` mode explicitly before touching code.
 
-When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE — see Section 7 / Multi-agent review.
+When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE, bounded by the waiver in Section 7 — see Section 7 / Multi-agent review.
 
 ### `migrate` — irreversible change
 
@@ -253,7 +255,7 @@ If a refactor surfaces a real bug along the way, exit `refactor` mode explicitly
 | `explore` | relaxed | relaxed | unchanged | reframed (decision, not merge) | relaxed (chain visible through work, defer to writeup) |
 | `harden` | strengthened | **inverted** | unchanged | strengthened (failure modes, obs) | strengthened (why-chain per failure mode) |
 | `ship` | strengthened | strengthened | strengthened | strengthened (deploy-ready) | strengthened (why-this-ships-now chain) |
-| `firefight` | inverted | relaxed | **strengthened** | reframed (rollback) | **deferred to postmortem** |
+| `firefight` | inverted | relaxed | **strengthened** | reframed (rollback) | **deferred to postmortem** — except canonical-state-verification |
 | `review` | surfacing | surfacing | n/a (no writes) | "feedback, not action items" | applied to findings (one iteration floor) |
 | `migrate` | **strengthened-plus** (verify state) | strengthened (reversibility) | reframed (migration scope only) | strengthened (demonstrated rollback) | strengthened (bidirectional chain) |
 | `refactor` | reframed (goal known) | reframed (output, not constraint) | **inverted in spirit** (large diff by design) | explicit (parity tests) | applied to refactor's existence ("why this refactor now") |
@@ -264,7 +266,7 @@ Load-bearing oddities, worth memorizing:
 - **Both `ship` and `firefight` strengthen #3.** Opposite emotional registers — calm vs. panic — same blast-radius discipline.
 - **`migrate` is the only mode that requires empirical assumption verification.** "I assume the table has X rows" is not a stated assumption — it's an unfalsified one. Read the data first.
 - **`refactor` is the only mode where the diff size rule inverts.** A large refactor diff is correct; a small refactor diff is suspicious (probably a bug fix in disguise).
-- **`firefight` is the only mode where #5 defers entirely.** Mid-incident causal analysis is a known anti-pattern; the principle pauses for the duration of the act-rollback-verify cycle and resumes in the postmortem with full force.
+- **`firefight` is the only mode where #5 defers** — its two analytical halves. Mid-incident causal analysis is a known anti-pattern; forward justification and backward five-whys both pause for the act-rollback-verify cycle and resume in the postmortem with full force. The canonical-state-verification precondition does not pause (ADR-024).
 
 ---
 
@@ -301,13 +303,14 @@ When the project declares a reviewer list, high-stakes review and gate work
 dispatches to those reviewers in parallel rather than to a single agent.
 Reconciliation requires unanimous APPROVE. Any REQUEST_CHANGES blocks delivery
 until the finding is resolved and re-reviewed, or a human explicitly records a
-waiver that identifies the finding and rationale. Retry exhaustion never implies
-approval: an agent must stop and surface the block rather than silently continue.
+waiver identifying the finding and its rationale. An agent may not issue that
+waiver. Retry exhaustion never implies approval: an agent that exhausts its
+retries must stop and surface the block rather than silently continue (ADR-025).
 The reviewer identifiers are project-defined (typically via a
 `## Multi-agent review` section in the project's `CLAUDE.md`); this contract
 specifies the dispatch and reconciliation shape, not the vocabulary.
 
-Empirical basis: `UlyssesModel/kavara-mirepoix-internal#11` and `#12` —
+Empirical basis: two internal PR-level face-offs (PRs #11 and #12) —
 two-for-two on real architectural issues caught by the second reviewer that
 a single-reviewer pass had APPROVE'd past.
 

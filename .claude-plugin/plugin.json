@@ -1,13 +1,13 @@
 {
   "name": "mise-en-place",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Mirepoix's agent behavioral contract — five principles (Karpathy four + Justified Action / Five Whys per ADR-016) + 8 operating modes + 5 Mirepoix addenda (including multi-agent review). Activates as a skill that elicits the active mode from the operator at session start.",
   "author": {
     "name": "John Edge",
     "email": "john.edge@kavara.ai"
   },
-  "homepage": "https://github.com/UlyssesModel/mise-en-place",
-  "repository": "https://github.com/UlyssesModel/mise-en-place",
+  "homepage": "https://github.com/Mirepoix-AI/mise-en-place",
+  "repository": "https://github.com/Mirepoix-AI/mise-en-place",
   "license": "SEE LICENSE FILE",
   "keywords": ["mirepoix", "agent-skills", "claude-code", "claude-cowork", "behavioral-contract", "karpathy", "five-whys"]
 }

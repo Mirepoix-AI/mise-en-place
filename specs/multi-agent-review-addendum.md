@@ -2,7 +2,7 @@
 
 **Resolves:** Codifies the multi-agent review face-off pattern as a behavioral commitment in the mise-en-place contract. Promotes the pattern from downstream Kavara experiment to contract addendum.
 
-**Empirical evidence:** Two PR-level face-offs in `UlyssesModel/kavara-mirepoix-internal` (PR #11 codex-teammate, PR #12 codex-events / Issue #10) — both caught real architectural issues a single reviewer had approved past.
+**Empirical evidence:** Two internal PR-level face-offs (PR #11 codex-teammate, PR #12 codex-events / Issue #10) — both caught real architectural issues a single reviewer had approved past.
 
 **Phase:** mise-en-place v0.4.0. Mode: `build`.
 
@@ -31,7 +31,7 @@ The addendum codifies the *dispatch and reconciliation shape*. The *reviewer-ide
 - The principle: high-stakes review and gate work dispatches to multiple agents in parallel when the project declares a reviewer list
 - The reconciliation rule: unanimous APPROVE — any REQUEST_CHANGES blocks delivery until resolved and re-reviewed or explicitly waived by a human; retry exhaustion must not silently continue the phase
 - The activation convention: project-level `CLAUDE.md` declares the reviewer list (typically via a `## Multi-agent review` section)
-- An empirical-evidence pointer to `UlyssesModel/kavara-mirepoix-internal#11` and `#12`
+- An empirical-evidence pointer to internal PRs #11 and #12
 
 **FR-2.** Add brief cross-references in `MODES.md` for `review` and `ship` modes noting the addendum's behavior when active. These are *cross-references*, not structural changes to the mode definitions — the modes themselves are unchanged.
 
@@ -92,8 +92,8 @@ MINOR bump per SemVer — behavior addition, no breaking change.
 - `CHANGELOG.md` — Keep a Changelog format, SemVer convention; existing entries for 0.1.0, 0.2.0, 0.3.0 show the house style.
 - `.github/workflows/validate.yml` + `.github/scripts/validate_plugin.py` — CI validator from PR #1.
 - Empirical evidence:
-  - `UlyssesModel/kavara-mirepoix-internal#11` (codex-teammate spec, first multi-agent face-off)
-  - `UlyssesModel/kavara-mirepoix-internal#12` (codex-events / Issue #10, second face-off — Codex caught 4 real issues + 3 missing fields)
+  - internal PR #11 (codex-teammate spec, first multi-agent face-off)
+  - internal PR #12 (codex-events / Issue #10, second face-off — Codex caught 4 real issues + 3 missing fields)
 
 ## Notes for the architect during PLAN
 

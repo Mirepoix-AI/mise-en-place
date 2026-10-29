@@ -40,7 +40,7 @@ From any terminal on a machine with the repo cloned (or with SSH access to the p
 claude plugin marketplace add /path/to/mise-en-place
 
 # Or directly from GitHub (requires SSH access to the private repo):
-claude plugin marketplace add UlyssesModel/mise-en-place
+claude plugin marketplace add Kavara-AI/mise-en-place
 
 # Then install the plugin:
 claude plugin install mise-en-place@mirepoix
@@ -81,7 +81,7 @@ Eight operating modes — see [MODES.md](./MODES.md) for the index, or [contract
 
 ## Lineage
 
-Principles 1-4 are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md) (MIT-licensed upstream). Principle 5 is Mirepoix-augmented from Amazon's [Well-Architected Five Whys](https://wa.aws.amazon.com/) — the technique is upstream, the foundational placement and the mode-specific override structure are Mirepoix's. Everything wrapped around the principles — modes, addenda, elicitation flow, the name itself — is Mirepoix-native. See [ADR-016](https://github.com/UlyssesModel/kavara-mirepoix-internal/blob/main/adrs/ADR-016-mise-en-place-principle-5.md) for the architectural commitment that authorized the fifth principle.
+Principles 1-4 are adapted from [forrestchang/andrej-karpathy-skills/CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md) (MIT-licensed upstream). Principle 5 is Mirepoix-augmented from Amazon's [Well-Architected Five Whys](https://wa.aws.amazon.com/) — the technique is upstream, the foundational placement and the mode-specific override structure are Mirepoix's. Everything wrapped around the principles — modes, addenda, elicitation flow, the name itself — is Mirepoix-native. See [ADR-016](https://github.com/Mirepoix-AI/mirepoix/blob/main/adrs/ADR-016-mise-en-place-principle-5.md) for the architectural commitment that authorized the fifth principle.
 
 ## CI
 

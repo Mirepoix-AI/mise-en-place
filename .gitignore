@@ -22,3 +22,8 @@ SCRATCH.md
 
 # Python bytecode
 __pycache__/
+
+# on-loop session artefacts — never commit these to a public/product repo.
+# Removed 2026-08-11: 31 committed files carried operator home paths, an internal
+# codename, and the name of a private repository. Do not name them here either.
+.on-loop/

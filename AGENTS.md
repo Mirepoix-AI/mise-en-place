@@ -2,7 +2,7 @@
 
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
-- Treat `skills/mise-en-place/references/contract.md` as the canonical behavioral contract; activation surfaces should stay aligned with it.
+- Treat `skills/mise-en-place/references/contract.md` as the canonical behavioral contract (also linked from the repo root as `mise-en-place.md`); activation stays `skills/mise-en-place/SKILL.md`, and activation surfaces should stay aligned with the contract.
 - Run the repository, official Claude, and Cowork packaging checks documented in `.github/scripts/README.md` before delivery.
 
 ## Maintaining this file

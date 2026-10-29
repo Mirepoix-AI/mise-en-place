@@ -31,7 +31,7 @@ Worth memorizing — these are the non-obvious points the contract calls out exp
 - **Both `ship` and `firefight` strengthen #3.** Opposite emotional registers — calm vs. panic — same blast-radius discipline.
 - **`migrate` is the only mode that requires empirical assumption verification.** "I assume the table has X rows" is not a stated assumption — it's an unfalsified one. Read the data first.
 - **`refactor` is the only mode where the diff size rule inverts.** A large refactor diff is correct; a small refactor diff is suspicious (probably a bug fix in disguise).
-- **`firefight` is the only mode where #5 defers entirely.** Mid-incident causal analysis is a known anti-pattern; the principle pauses for the duration of the act-rollback-verify cycle and resumes in the postmortem with full force.
+- **`firefight` is the only mode where #5 defers** — its two analytical halves. Mid-incident causal analysis is a known anti-pattern; forward justification and backward five-whys pause for the act-rollback-verify cycle and resume in the postmortem with full force. The canonical-state-verification precondition does not pause (ADR-024).
 
 ---
 
@@ -55,12 +55,12 @@ Postcondition: a writeup or ADR. The code is deletable by design.
 
 All five principles strengthen. Assumptions stated *and* verified, no new dependencies, every line traces to the merge target's intent, deploy-readiness checklist met. #5 strengthens to "why-this-ships-now chain" — the why must terminate in a load-bearing premise, not "...because we said we would." No assumed-green CI.
 
-The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks delivery until resolved and re-reviewed or explicitly waived by a human. Retry exhaustion is not approval — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
+The ship gate also runs under multi-agent review when the project declares a reviewer list; any REQUEST_CHANGES blocks delivery until resolved and re-reviewed, or a human records an explicit waiver. Retry exhaustion is not approval — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
 [Full contract →](skills/mise-en-place/references/contract.md#6b-the-eight-modes)
 
 ### `firefight`
 
-#1 inverts: log assumptions inline (`// ASSUMED(firefight): X`), reconcile in the postmortem. #2 relaxes — a working hack is acceptable, tagged `// HACK(firefight): ...`. #3 *strengthens* — blast radius minimal even at speed; no drive-by improvements. **#5 defers entirely** — do NOT run five-whys during the incident; resume in the postmortem.
+#1 inverts: log assumptions inline (`// ASSUMED(firefight): X`), reconcile in the postmortem. #2 relaxes — a working hack is acceptable, tagged `// HACK(firefight): ...`. #3 *strengthens* — blast radius minimal even at speed; no drive-by improvements. **#5 defers** — do NOT run five-whys during the incident; resume in the postmortem. The canonical-state-verification precondition (§5 Forward) is exempt from the deferral and still runs before any irreversible operation.
 Postcondition: postmortem stub including the five-whys causal chain (not just chronology), plus a list of `HACK(firefight)` tags to triage.
 [Full contract →](skills/mise-en-place/references/contract.md#6b-the-eight-modes)
 
@@ -68,7 +68,7 @@ Postcondition: postmortem stub including the five-whys causal chain (not just ch
 
 All five principles reframed as **surfacing**, not **doing**. Flag tradeoffs and concerns rather than fix them; don't suggest changes beyond the review's scope. Success is decision-quality feedback, not an action-item list. #5 applies to findings — every flagged finding traces to at least one iteration of why; "this looks wrong" is insufficient. If a review uncovers something that demands a write, exit `review` mode explicitly first.
 
-When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE; requested changes remain blocking unless a human explicitly records a waiver — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
+When the project declares a reviewer list, review work dispatches to those reviewers in parallel and requires unanimous APPROVE, bounded by the Section 7 waiver — see [contract §7 / Multi-agent review](skills/mise-en-place/references/contract.md#7-mirepoix-addenda).
 [Full contract →](skills/mise-en-place/references/contract.md#6b-the-eight-modes)
 
 ### `migrate`

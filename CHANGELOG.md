@@ -14,6 +14,7 @@ Consolidated onto [Mirepoix-AI/mise-en-place](https://github.com/Mirepoix-AI/mis
 - Restored plugin/marketplace version parity (now `0.6.0`) and added the marketplace description required by Claude Code's strict validator.
 - Reconciled the canonical contract and activation surfaces: `explore` is the only exploratory mode; direct mode switches acknowledge rather than re-prompt; Five Whys uses five as a checkpoint rather than a quota; footer means a response footer, not host UI chrome; and the ACP package example uses `@mirepoix/acp`.
 - Replaced inaccurate claims that Principles 1–4 are verbatim with accurate adaptation language.
+- Contract §5 reference implementation link now points to the canonical [`Mirepoix-AI/on-loop/bin/on-loop-tag`](https://github.com/Mirepoix-AI/on-loop/blob/main/bin/on-loop-tag) (was `Kavara-AI/on-loop`, a public fork). Dated entries below that name `UlyssesModel/on-loop` are left as historical record.
 - Multi-agent reconciliation now follows `[0.6.0]` §7 (ADR-025): a parallel draft of the same rule on this line was superseded by it. `MODES.md` keeps this line's "retry exhaustion is not approval" pointer.
 
 ### Added

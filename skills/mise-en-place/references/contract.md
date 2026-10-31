@@ -116,7 +116,7 @@ If the answer is no, that iteration is the load-bearing premise; the chain doesn
 
 **Precedence (ADR-024):** this precondition is a state check, not causal analysis, and it outranks every mode override — including `firefight`'s deferral of Principle 5. Where a mode relaxation and a destructive-operation precondition conflict, the precondition wins.
 
-**Reference implementation:** [`Kavara-AI/on-loop/bin/on-loop-tag`](https://github.com/Kavara-AI/on-loop/blob/main/bin/on-loop-tag) — eight pre-flight checks for `git tag` operations (clean worktree, branch sync, signature config, prior-tag absence, etc.). Generalizes to other destructive-op tooling. The discipline is universal; the implementation is per-operation.
+**Reference implementation:** [`Mirepoix-AI/on-loop/bin/on-loop-tag`](https://github.com/Mirepoix-AI/on-loop/blob/main/bin/on-loop-tag) — eight pre-flight checks for `git tag` operations (clean worktree, branch sync, signature config, prior-tag absence, etc.). Generalizes to other destructive-op tooling. The discipline is universal; the implementation is per-operation.
 
 ### Backward — when problems occur
 
